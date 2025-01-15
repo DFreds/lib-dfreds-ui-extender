@@ -1,5 +1,5 @@
 {
-    "name": "dfreds-module-template-ts",
+    "name": "lib-dfreds-ui-extender",
     "version": "1.0.0",
     "description": "A FoundryVTT module template using Typescript",
     "private": true,

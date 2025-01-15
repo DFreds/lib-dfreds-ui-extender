@@ -7,7 +7,7 @@ import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
-const PACKAGE_ID = "modules/dfreds-module-template-ts";
+const PACKAGE_ID = "modules/lib-dfreds-ui-extender";
 
 const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
     const buildMode = mode === "production" ? "production" : "development";
@@ -38,11 +38,11 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
         fs.writeFileSync("./index.html", `<h1>${message}</h1>\n`);
         if (!fs.existsSync("./styles")) fs.mkdirSync("./styles");
         fs.writeFileSync(
-            "./styles/dfreds-module-template-ts.css",
+            "./styles/lib-dfreds-ui-extender.css",
             `/** ${message} */\n`,
         );
         fs.writeFileSync(
-            "./dfreds-module-template-ts.mjs",
+            "./lib-dfreds-ui-extender.mjs",
             `/** ${message} */\n\nwindow.global = window;\nimport "./src/ts/module.ts";\n`,
         );
         fs.writeFileSync("./vendor.mjs", `/** ${message} */\n`);
@@ -50,7 +50,7 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
 
     return {
         base:
-            command === "build" ? "./" : `/modules/dfreds-module-template-ts/`,
+            command === "build" ? "./" : `/modules/lib-dfreds-ui-extender/`,
         publicDir: "static",
         define: {},
         esbuild: { keepNames: true },
@@ -60,7 +60,7 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
             minify: false,
             sourcemap: buildMode === "development",
             lib: {
-                name: "dfreds-module-template-ts",
+                name: "lib-dfreds-ui-extender",
                 entry: "src/ts/module.ts",
                 formats: ["es"],
                 fileName: "module",
@@ -69,10 +69,10 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
                 output: {
                     assetFileNames: ({ name }): string =>
                         name === "style.css"
-                            ? "styles/dfreds-module-template-ts.css"
+                            ? "styles/lib-dfreds-ui-extender.css"
                             : name ?? "",
                     chunkFileNames: "[name].mjs",
-                    entryFileNames: "dfreds-module-template-ts.mjs",
+                    entryFileNames: "lib-dfreds-ui-extender.mjs",
                     manualChunks: {
                         vendor: Object.keys(packageJSON.dependencies)
                             ? Object.keys(packageJSON.dependencies)
@@ -98,7 +98,7 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
             port: 30001,
             open: false,
             proxy: {
-                "^(?!/modules/dfreds-module-template-ts/)":
+                "^(?!/modules/lib-dfreds-ui-extender/)":
                     "http://localhost:30000/",
                 "/socket.io": {
                     target: "ws://localhost:30000",
@@ -142,7 +142,7 @@ function deleteLockFilePlugin(): Vite.Plugin {
             const outDir = outputOptions.dir ?? "";
             const lockFile = path.resolve(
                 outDir,
-                "dfreds-module-template-ts.lock",
+                "lib-dfreds-ui-extender.lock",
             );
             fs.rmSync(lockFile);
         },

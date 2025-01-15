@@ -38,18 +38,18 @@ jobs:
         env:
           version: ${{steps.get_version.outputs.version-without-v}}
           manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-          download: https://github.com/${{github.repository}}/releases/download/${{steps.get_version.outputs.version}}/dfreds-module-template-ts.zip
+          download: https://github.com/${{github.repository}}/releases/download/${{steps.get_version.outputs.version}}/lib-dfreds-ui-extender.zip
 
       - name: Zip files
         working-directory: ./dist
-        run: zip -r ./dfreds-module-template-ts.zip ./*
+        run: zip -r ./lib-dfreds-ui-extender.zip ./*
 
       - name: Create versioned release
         id: create_version_release
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true # Set this to false if you want to prevent updating existing releases
-          artifacts: "./dist/module.json, ./dist/dfreds-module-template-ts.zip"
+          artifacts: "./dist/module.json, ./dist/lib-dfreds-ui-extender.zip"
           body: "${{ github.event.release.body }}"
           draft: true
           generateReleaseNotes: true

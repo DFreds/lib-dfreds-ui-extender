@@ -1,6 +1,6 @@
 {
-    "id": "dfreds-module-template-ts",
-    "title": "DFreds Module Template TS",
+    "id": "lib-dfreds-ui-extender",
+    "title": "Lib: DFreds UI Extender",
     "description": "A FoundryVTT template module using typescript and vite",
     "version": "1.0.0",
     "compatibility": {
@@ -8,9 +8,9 @@
         "verified": 12,
         "maximum": 12
     },
-    "esmodules": ["vendor.mjs", "dfreds-module-template-ts.mjs"],
+    "esmodules": ["vendor.mjs", "lib-dfreds-ui-extender.mjs"],
     "scripts": [],
-    "styles": ["styles/dfreds-module-template-ts.css"],
+    "styles": ["styles/lib-dfreds-ui-extender.css"],
     "packs": [],
     "packFolders": [],
     "relationships": {
@@ -27,13 +27,13 @@
         }
     ],
     "socket": false,
-    "url": "https://github.com/DFreds/dfreds-module-template-ts",
-    "manifest": "https://github.com/DFreds/dfreds-module-template-ts/releases/latest/download/module.json",
-    "download": "https://github.com/DFreds/dfreds-module-template-ts/releases/download/v1.0.0/dfreds-module-template-ts.zip",
-    "license": "https://github.com/DFreds/dfreds-module-template-ts/blob/main/LICENSE",
-    "readme": "https://github.com/DFreds/dfreds-module-template-ts/blob/main/README.md",
-    "bugs": "https://github.com/DFreds/dfreds-module-template-ts/issues",
-    "changelog": "https://github.com/DFreds/dfreds-module-template-ts/releases",
-    "library": false,
+    "url": "https://github.com/DFreds/lib-dfreds-ui-extender",
+    "manifest": "https://github.com/DFreds/lib-dfreds-ui-extender/releases/latest/download/module.json",
+    "download": "https://github.com/DFreds/lib-dfreds-ui-extender/releases/download/v1.0.0/lib-dfreds-ui-extender.zip",
+    "license": "https://github.com/DFreds/lib-dfreds-ui-extender/blob/main/LICENSE",
+    "readme": "https://github.com/DFreds/lib-dfreds-ui-extender/blob/main/README.md",
+    "bugs": "https://github.com/DFreds/lib-dfreds-ui-extender/issues",
+    "changelog": "https://github.com/DFreds/lib-dfreds-ui-extender/releases",
+    "library": true,
     "media": []
 }
