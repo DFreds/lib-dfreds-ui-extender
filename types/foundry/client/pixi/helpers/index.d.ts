@@ -1,0 +1,9 @@
+import "./cached-container.d.ts";
+import "./control-icon.d.ts";
+import "./door-control.d.ts";
+import "./grid-highlight.d.ts";
+import "./object-hud.d.ts";
+import "./point-source/index.d.ts";
+import "./precise-text.d.ts";
+import "./ray/index.d.ts";
+import "./resize-handle.d.ts";
