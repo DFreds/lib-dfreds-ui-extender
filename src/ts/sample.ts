@@ -1,11 +1,10 @@
-import { UiExtender } from "./module.ts";
+import { UiExtender } from "./ui-extender.ts";
 
 // Module usage
 export function mySampleModule(): void {
-    CONFIG.debug.hooks = true; // TODO
     // @ts-expect-error Type mismatch
     Hooks.once("uiExtender.init", (uiExtender: UiExtender) => {
-        uiExtender.addSceneControl({
+        uiExtender.registerSceneControl({
             name: "token",
             position: 2,
             tool: {
@@ -21,7 +20,7 @@ export function mySampleModule(): void {
         });
 
         // TODO entire module out of this
-        uiExtender.addHUDButton({
+        uiExtender.registerHudButton({
             hudType: "token",
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image fa-fw"></i>`,
@@ -54,8 +53,8 @@ export function mySampleModule(): void {
                     };
 
                 titles = {
-                    actor: game.i18n.localize("TKNHAB.ActorImg"),
-                    token: game.i18n.localize("TKNHAB.TokenImg"),
+                    actor: "Actor Image",
+                    token: "Token Image",
                 };
 
                 new ImagePopout(images.actor, {
@@ -102,7 +101,7 @@ export function mySampleModule(): void {
             },
         });
 
-        uiExtender.addHUDButton({
+        uiExtender.registerHudButton({
             hudType: "tile",
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image fa-fw"></i>`,
@@ -121,7 +120,7 @@ export function mySampleModule(): void {
             },
         });
 
-        uiExtender.addHUDButton({
+        uiExtender.registerHudButton({
             hudType: "drawing",
             tooltip: "Say Hi",
             icon: `<i class="fas fa-robot fa-fw"></i>`,
