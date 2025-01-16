@@ -1,3 +1,4 @@
+import { MODULE_ID } from "./constants.ts";
 import { UiExtender } from "./ui-extender.ts";
 
 // Module usage
@@ -5,6 +6,7 @@ export function mySampleModule(): void {
     // @ts-expect-error Type mismatch
     Hooks.once("uiExtender.init", (uiExtender: UiExtender) => {
         uiExtender.registerSceneControl({
+            moduleId: MODULE_ID,
             name: "token",
             position: 2,
             tool: {
@@ -21,6 +23,7 @@ export function mySampleModule(): void {
 
         // TODO entire module out of this
         uiExtender.registerHudButton({
+            moduleId: MODULE_ID,
             hudType: "token",
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image fa-fw"></i>`,
@@ -102,6 +105,7 @@ export function mySampleModule(): void {
         });
 
         uiExtender.registerHudButton({
+            moduleId: MODULE_ID,
             hudType: "tile",
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image fa-fw"></i>`,
@@ -121,6 +125,7 @@ export function mySampleModule(): void {
         });
 
         uiExtender.registerHudButton({
+            moduleId: MODULE_ID,
             hudType: "drawing",
             tooltip: "Say Hi",
             icon: `<i class="fas fa-robot fa-fw"></i>`,

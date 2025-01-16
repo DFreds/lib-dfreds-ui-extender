@@ -29,7 +29,11 @@ class UiExtender {
     }
 
     registerSceneControl(input: SceneControlInput): void {
-        this.#sceneControls.push(input);
+        if (this.#verifyModuleId(input.moduleId)) {
+            this.#sceneControls.push(input);
+        } else {
+            throw new Error(`Invalid moduleId ${input.moduleId}`);
+        }
     }
 
     createSceneControls(): void {
@@ -58,7 +62,11 @@ class UiExtender {
     }
 
     registerHudButton(input: HudButtonInput): void {
-        this.#hudButtons.push(input);
+        if (this.#verifyModuleId(input.moduleId)) {
+            this.#hudButtons.push(input);
+        } else {
+            throw new Error(`Invalid moduleId ${input.moduleId}`);
+        }
     }
 
     createHudButtons(): void {
@@ -112,12 +120,20 @@ class UiExtender {
         });
     }
 
-    registerSidebar(): void {}
+    #verifyModuleId(id: string): boolean {
+        const mod = game.modules.get(id);
+        return !!mod;
+    }
 
     // https://github.com/p4535992/dfreds-convenient-effects/commit/02785d5cacef116e44816ff14705c8638b6c67bc
 }
 
 interface SceneControlInput {
+    /**
+     * The ID of the module registering
+     */
+    moduleId: string;
+
     /**
      * The name of the token layer
      */
@@ -144,6 +160,11 @@ interface SceneControlInput {
 }
 
 interface HudButtonInput {
+    /**
+     * The ID of the module registering
+     */
+    moduleId: string;
+
     /**
      * The type of HUD to use
      */
