@@ -33,13 +33,54 @@ interface SceneControlInput {
 }
 
 interface HUDButtonInput {
+    /**
+     * The type of HUD to use
+     */
     hudType: "token" | "tile" | "drawing";
+
+    /**
+     * The tooltip when hovering on the HUD button
+     */
     tooltip: string;
+
+    /**
+     * The name of action when clicking the button
+     */
     action?: string;
+
+    /**
+     * The HTML that will be used in the button
+     */
     icon: string;
+
+    /**
+     * The location of the button
+     */
     location: "div.left" | "div.right";
-    onClick?: (event: JQuery.ClickEvent, token: any) => void;
-    onRightClick?: (event: JQuery.ContextMenuEvent, token: any) => void;
+
+    /**
+     * The predicate to determine if the button should be added
+     *
+     * @param data The data for the item with the HUD
+     * @returns true if the button should be added, false otherwise
+     */
+    predicate?: (data: any) => boolean;
+
+    /**
+     * The click handler
+     *
+     * @param event The click event
+     * @param data The data for the item with the HUD
+     */
+    onClick?: (event: JQuery.ClickEvent, data: any) => void;
+
+    /**
+     * The right-click handler
+     *
+     * @param event The context menu event
+     * @param data The data for the item with the HUD
+     */
+    onRightClick?: (event: JQuery.ContextMenuEvent, data: any) => void;
 }
 
 export class UiExtender {
@@ -49,6 +90,11 @@ export class UiExtender {
         Hooks.callAll("uiExtender.init", uiExtender);
     }
 
+    /**
+     * Adds a new scene control
+     *
+     * @param input The input for the scene control
+     */
     addSceneControl(input: SceneControlInput): void {
         Hooks.on("getSceneControlButtons", (controls: SceneControl[]) => {
             const { name, position, tool } = input;
@@ -74,8 +120,17 @@ export class UiExtender {
         // @ts-expect-error Ignore this, it can't do dynamic hook names
         Hooks.on(`render${type}HUD`, (_hud: any, html: JQuery, data: any) => {
             // TODO take logic into new module, with
-            const { tooltip, action, icon, location, onClick, onRightClick } =
-                input;
+            const {
+                tooltip,
+                action,
+                icon,
+                location,
+                predicate,
+                onClick,
+                onRightClick,
+            } = input;
+
+            if (!predicate || !predicate(data)) return;
 
             const button = $(document.createElement("div"));
 
@@ -102,16 +157,6 @@ export class UiExtender {
 
             html.find(location).append(button);
         });
-    }
-
-    addHeaderButton(): void {
-        // TODO happens on render${DocumentType}Config
-        // TODO see renderActiveEffectConfig.ts
-    }
-
-    addChatButton(): void {
-        // TODO happens on renderChatLog
-        // TODO see chat-pins/module.ts
     }
 }
 
