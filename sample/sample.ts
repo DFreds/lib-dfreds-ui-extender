@@ -1,5 +1,5 @@
-import { MODULE_ID } from "./constants.ts";
-import { UiExtender } from "./ui-extender.ts";
+import { MODULE_ID } from "../src/ts/constants.ts";
+import { UiExtender } from "../src/ts/ui-extender.ts";
 
 // Module usage
 export function mySampleModule(): void {
