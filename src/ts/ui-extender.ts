@@ -44,7 +44,10 @@ class UiExtender {
 
     #createSceneControl(input: SceneControlInput): void {
         Hooks.on("getSceneControlButtons", (controls: SceneControl[]) => {
-            const { name, position, tool } = input;
+            const { name, position, predicate, tool } = input;
+
+            if (predicate && predicate(controls) === false) return;
+
             const targetControl = controls.find(
                 (control) => control.name === name,
             );
@@ -152,6 +155,14 @@ interface SceneControlInput {
      * The position to put the button. If no number is given, it will append it to the end
      */
     position?: number;
+
+    /**
+     * The predicate to determine if the control should be visible
+     *
+     * @param data The data for the controls
+     * @returns true if the control should be added, false otherwise
+     */
+    predicate?: (data: any) => boolean;
 
     /**
      * The tool data
