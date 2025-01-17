@@ -30,57 +30,227 @@
 </p>
 
 <p align="center">
-    <b>Lib: DFreds UI Extender</b> is a FoundryVTT module template that uses Typescript and Vite for development.
+    <b>Lib: DFreds UI Extender</b> is a FoundryVTT module library that adds easy ways to extend the base Foundry UI.
 </p>
 
-## Setup
+## Note
 
-- Ensure you have the pf2e repo cloned from github (`git clone git@github.com:foundryvtt/pf2e.git`)
-- Use the template button on Github to create a new repo. Make sure that the "Repository name" is the same name as the identifier of your new module. This is important since the folder name NEEDS to match the identifier when the module is linked to Foundry
-  - Example:
-    - Owner: DFreds
-    - Repository name: `dfreds-new-cool-module`
-- Clone the repo OUTSIDE of the Foundry data path
-- Copy `foundryconfig.example.json` to `foundryconfig.json` and update the data and pf2e paths
-  - This will allow the setup scripts to run
-  - Example:
-    - Windows: `"dataPath": "C:\\Users\\DFreds\\AppData\\Local\\FoundryVTT\\Data"`
-- If not already installed, download and install [nvm](https://github.com/nvm-sh/nvm).
-- Run `nvm use` or `nvm install <version>` and `nvm use`
-  - Ensures a common node version is used regardless of user environment
-- Run `npm ci`
-  - Installs all dependencies according to the `package-lock.json`
-- Run `npm run rename-module`
-  - Replaces all occurrences of `lib-dfreds-ui-extender` and `Lib: DFreds UI Extender` in the project with your desired module identifier and name
-- Run `npm run update-types`
-  - Copies all pf2e types to the `/types` folder using the pf2e path set in `foundryconfig.json`
-- Run `npm run lint:fix`
-  - Fixes and formats all the types you just copied from pf2e. Recommend doing this after every type update to reduce diffs
-- Run `npm run build`
-  - Builds the app into the `/dist` folder
-- Run `npm run link`
-  - Symlinks the built `/dist` folder to your Foundry data path set in `foundryconfig.json`
-- If you don't plan on using any 3rd party dependencies, then be sure to remove `vendor.mjs` everywhere that it is mentioned in the project.
-  - Note that the UUID dependency was included to get started. It's likely you don't need this specific dependency, but the module won't build without at least one dependency if the references to `vendor.mjs` exists in the project.
+This library is still in beta, and will expand and change as it progresses. Please submit any feature requests on Github or on the Discord!
 
-## Static Files
+## Usage
 
-Assets, fonts, language files, packs, templates, and the module.json can all exist in the `/static` folder in anyway you see fit. When built, any static files or folders will exist in `/dist` directly.
+To use this in your own module, you should use the `uiExtender.init` hook and register your UI elements. See the example below for specifics.
 
-## Updating Node
+## API Methods
 
-After updating to a new node version, run `node -v > .nvmrc`.
+Currently, these are the supported API methods:
 
-## Releasing a New Module Version
+### Register Scene Control
 
-- Create a new tag with the format `major.minor.patch` or `vMajor.Minor.Patch`.
-  - Example: `1.0.0` or `v1.0.0`
-- Push the tag to origin
-- Once the workflow completes, go to the Releases and observe the new draft release corresponding to the version
-- Edit the draft release, make any desired changes, and then press Publish
+A scene control is a button that is located on a specific layer.
 
-## References
+<img src="docs/scene-control.png"/>
 
-- https://foundryvtt.com/article/module-development/
-- https://foundryvtt.wiki/en/development/guides/vite
-- https://bringingfire.com/blog/intro-to-foundry-module-development
+```js
+registerSceneControl(input: SceneControlInput)
+```
+
+The data objects are described below:
+
+```ts
+interface SceneControlInput {
+    /**
+     * The ID of the module registering
+     *
+     */
+    moduleId: string;
+
+    /**
+     * The name of the token layer
+     */
+    name:
+        | "token"
+        | "measure"
+        | "tiles"
+        | "drawings"
+        | "walls"
+        | "lighting"
+        | "sounds"
+        | "regions"
+        | "notes";
+
+    /**
+     * The position to put the button. If no number is given, it will append it to the end
+     */
+    position?: number;
+
+    /**
+     * The tool data
+     */
+    tool: SceneControlTool;
+}
+
+interface SceneControlTool {
+    name: string;
+    title: string;
+    icon: string;
+    visible: boolean;
+    toggle?: boolean;
+    active?: boolean;
+    button?: boolean;
+    onClick?: () => void;
+    /** Configuration for rendering the tool's toolclip. */
+    toolclip?: ToolclipConfiguration;
+}
+
+interface ToolclipConfiguration {
+    /** The filename of the toolclip video. */
+    src: string;
+    /** The heading string. */
+    heading: string;
+    /** The items in the toolclip body. */
+    items: ToolclipConfigurationItem[];
+}
+
+interface ToolclipConfigurationItem {
+    /** A plain paragraph of content for this item. */
+    paragraph?: string;
+    /** A heading for the item. */
+    heading?: string;
+    /** Content for the item. */
+    content?: string;
+    /** If the item is a single key reference, use this instead of content. */
+    reference?: string;
+}
+```
+
+### Register HUD Button
+
+<img src="docs/hud-button.png"/>
+
+```js
+registerHudButton(input: HudButtonInput)
+```
+
+The data objects are described below:
+
+```ts
+interface HudButtonInput {
+    /**
+     * The ID of the module registering
+     */
+    moduleId: string;
+
+    /**
+     * The type of HUD to use
+     */
+    hudType: "token" | "tile" | "drawing";
+
+    /**
+     * The tooltip when hovering on the HUD button
+     */
+    tooltip: string;
+
+    /**
+     * The name of action when clicking the button
+     */
+    action?: string;
+
+    /**
+     * The HTML that will be used in the button
+     */
+    icon: string;
+
+    /**
+     * The location of the button
+     */
+    location: "div.left" | "div.right";
+
+    /**
+     * The predicate to determine if the button should be added
+     *
+     * @param data The data for the item with the HUD
+     * @returns true if the button should be added, false otherwise
+     */
+    predicate?: (data: any) => boolean;
+
+    /**
+     * The click handler
+     *
+     * @param event The click event
+     * @param data The data for the item with the HUD
+     */
+    onClick?: (event: JQuery.ClickEvent, data: any) => void;
+
+    /**
+     * The right-click handler
+     *
+     * @param event The context menu event
+     * @param data The data for the item with the HUD
+     */
+    onRightClick?: (event: JQuery.ContextMenuEvent, data: any) => void;
+}
+```
+
+## Examples
+
+```js
+export function mySampleModule() {
+  Hooks.once("uiExtender.init", uiExtender => {
+    uiExtender.registerSceneControl({
+      moduleId: "my-module-id",
+      name: "token",
+      position: 2,
+      tool: {
+        name: "testing-button",
+        title: "DFreds Test Button",
+        icon: "fas fa-robot",
+        button: true,
+        visible: true,
+        onClick: () => {
+          ui.notifications.info("You clicked me!")
+        }
+      }
+    })
+
+    uiExtender.registerHudButton({
+      moduleId: "my-module-id",
+      hudType: "token",
+      tooltip: "New Token Button",
+      icon: `<i class="fas fa-image fa-fw"></i>`,
+      location: "div.left",
+      onClick: (_event, token) => {
+        console.log("Clicked!")
+      },
+      onRightClick: (_event, token) => {
+        console.log("Right clicked!")
+      }
+    })
+
+    uiExtender.registerHudButton({
+      moduleId: "my-module-id",
+      hudType: "tile",
+      tooltip: "New Tile Button",
+      icon: `<i class="fas fa-image fa-fw"></i>`,
+      location: "div.right",
+      onClick: (_event, tile) => {
+        console.log("Clicked!")
+      },
+      onRightClick: (_event, tile) => {
+        console.log("Right clicked!")
+      }
+    })
+
+    uiExtender.registerHudButton({
+      moduleId: "my-module-id",
+      hudType: "drawing",
+      tooltip: "Say Hi",
+      icon: `<i class="fas fa-robot fa-fw"></i>`,
+      location: "div.right",
+      onClick: (_event, drawing) => {
+        ui.notifications.info(`Hello from drawing ${drawing.fillColor}`)
+      }
+    })
+  })
+}
+```
