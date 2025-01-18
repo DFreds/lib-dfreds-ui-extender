@@ -1,4 +1,10 @@
+import { UiExtender } from "./ui-extender.ts";
+
 declare global {
+    interface Window {
+        UiExtender: UiExtender;
+    }
+
     namespace globalThis {
         let CONFIG: Config<
             AmbientLightDocument<Scene | null>,
