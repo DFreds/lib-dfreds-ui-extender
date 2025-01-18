@@ -39,7 +39,11 @@ This library is still in beta, and will expand and change as it progresses. Plea
 
 ## Usage
 
-To use this in your own module, you should use the `uiExtender.init` hook and register your UI elements. See the example below for specifics.
+To use this in your own module, you can do any of the following:
+- Use the `uiExtender.init` hook (which fires based on Foundry's `init` hook) and register your UI elements on the provided instance of `uiExtender`
+- Use the `window.UiExtender` (accessible as just `UiExtender` in console and code) and register in Foundry's init method.
+
+Note that everything will be ready to render when the Foundry `setup` hook is complete.
 
 ## API Methods
 
@@ -47,7 +51,7 @@ Currently, these are the supported API methods:
 
 ### Register Scene Control
 
-A scene control is a button that is located on a specific layer.
+A scene control is a button that is located on a specific layer. Under the hood, this uses the `getSceneControlButtons` hook.
 
 <img src="docs/scene-control.png"/>
 
@@ -125,6 +129,8 @@ interface ToolclipConfigurationItem {
 ```
 
 ### Register HUD Button
+
+A HUD button is a button located located on a specific item on the canvas when you right click. Under the hood, this uses the `render${type}HUD` hook.
 
 <img src="docs/hud-button.png"/>
 
