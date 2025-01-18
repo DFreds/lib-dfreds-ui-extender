@@ -89,6 +89,14 @@ interface SceneControlInput {
     position?: number;
 
     /**
+     * The predicate to determine if the control should be visible
+     *
+     * @param data The data for the controls
+     * @returns true if the control should be added, false otherwise
+     */
+    predicate?: (data: any) => boolean;
+
+    /**
      * The tool data
      */
     tool: SceneControlTool;
