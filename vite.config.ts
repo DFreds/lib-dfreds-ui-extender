@@ -2,7 +2,7 @@ import * as Vite from "vite";
 import checker from "vite-plugin-checker";
 import esbuild from "esbuild";
 import fs from "fs";
-import packageJSON from "./package.json" assert { type: "json" };
+// import packageJSON from "./package.json" assert { type: "json" };
 import path from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { viteStaticCopy } from "vite-plugin-static-copy";
@@ -45,12 +45,11 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
             "./lib-dfreds-ui-extender.mjs",
             `/** ${message} */\n\nwindow.global = window;\nimport "./src/ts/module.ts";\n`,
         );
-        fs.writeFileSync("./vendor.mjs", `/** ${message} */\n`);
+        // fs.writeFileSync("./vendor.mjs", `/** ${message} */\n`);
     }
 
     return {
-        base:
-            command === "build" ? "./" : `/modules/lib-dfreds-ui-extender/`,
+        base: command === "build" ? "./" : `/modules/lib-dfreds-ui-extender/`,
         publicDir: "static",
         define: {},
         esbuild: { keepNames: true },
@@ -73,11 +72,11 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
                             : name ?? "",
                     chunkFileNames: "[name].mjs",
                     entryFileNames: "lib-dfreds-ui-extender.mjs",
-                    manualChunks: {
-                        vendor: Object.keys(packageJSON.dependencies)
-                            ? Object.keys(packageJSON.dependencies)
-                            : [],
-                    },
+                    // manualChunks: {
+                    //     vendor: Object.keys(packageJSON.dependencies)
+                    //         ? Object.keys(packageJSON.dependencies)
+                    //         : [],
+                    // },
                 },
             },
             target: "es2022",

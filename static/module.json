@@ -8,7 +8,7 @@
         "verified": 12,
         "maximum": 12
     },
-    "esmodules": ["vendor.mjs", "lib-dfreds-ui-extender.mjs"],
+    "esmodules": ["lib-dfreds-ui-extender.mjs"],
     "scripts": [],
     "styles": ["styles/lib-dfreds-ui-extender.css"],
     "packs": [],
