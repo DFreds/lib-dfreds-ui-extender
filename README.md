@@ -136,6 +136,30 @@ interface ToolclipConfigurationItem {
 }
 ```
 
+An example:
+
+```js
+export function mySampleModule() {
+  Hooks.once("uiExtender.init", (uiExtender) => {
+    uiExtender.registerSceneControl({
+      moduleId: "my-module-id",
+      name: "token",
+      position: 2,
+      tool: {
+        name: "testing-button",
+        title: "DFreds Test Button",
+        icon: "fas fa-robot",
+        button: true,
+        visible: true,
+        onClick: () => {
+          ui.notifications.info("You clicked me!")
+        }
+      }
+    })
+  })
+}
+```
+
 ### Register HUD Button
 
 A HUD button is a button located located on a specific item on the canvas when you right click. Under the hood, this uses the `render${type}HUD` hook.
@@ -206,27 +230,11 @@ interface HudButtonInput {
 }
 ```
 
-## Examples
+Some examples:
 
 ```js
 export function mySampleModule() {
-  Hooks.once("uiExtender.init", uiExtender => {
-    uiExtender.registerSceneControl({
-      moduleId: "my-module-id",
-      name: "token",
-      position: 2,
-      tool: {
-        name: "testing-button",
-        title: "DFreds Test Button",
-        icon: "fas fa-robot",
-        button: true,
-        visible: true,
-        onClick: () => {
-          ui.notifications.info("You clicked me!")
-        }
-      }
-    })
-
+  Hooks.once("uiExtender.init", (uiExtender) => {
     uiExtender.registerHudButton({
       moduleId: "my-module-id",
       hudType: "token",
@@ -267,4 +275,31 @@ export function mySampleModule() {
     })
   })
 }
+```
+
+## Handlebar Helpers
+
+A few handlebar helpers have also been registered to make common use cases easier.
+
+## Is GM
+
+This will help in conditionally rendering some HTML depending on if the user is a GM or not.
+
+```hbs
+{{#if (isGm)}}
+    <button class="view-backups">
+        <i class="fas fa-arrow-rotate-left"></i>
+        My GM Button
+    </button>
+{{/if}}
+```
+
+### Strip HTML
+
+This will remove any HTML elements from a provided string.
+
+```hbs
+<h4 class="entry-name document-name"><a
+    title="{{stripHtml effect.description}}"
+>{{effect.name}}</a></h4>
 ```
