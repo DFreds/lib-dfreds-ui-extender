@@ -103,35 +103,92 @@ interface SceneControlInput {
 }
 
 interface SceneControlTool {
+    /**
+     * The name of the tool. This is used to identify the tool in the scene
+     * control tools.
+     */
     name: string;
+
+    /**
+     * The title of the tool that display on hover.
+     */
     title: string;
+
+    /**
+     * The icon used for the tool. This is the icon class from Font Awesome.
+     */
     icon: string;
+
+    /**
+     * Determines if the tool is visible in the scene control tools. Note that
+     * it might be better to use the predicate function instead, based on when
+     * the tool is registered.
+     */
     visible: boolean;
+
+    /**
+     * Determines if the tool should be toggleable. If true, the tool will render as on/off rather than selected/deselected.
+     */
     toggle?: boolean;
+
+    /**
+     * Determines if the tool is active or not
+     */
     active?: boolean;
+
+    /**
+     * Determines if the tool should render as a button. If false, the tool will
+     * remain active after clicking.
+     */
     button?: boolean;
+
+    /**
+     * The click handler
+     */
     onClick?: () => void;
-    /** Configuration for rendering the tool's toolclip. */
+
+    /**
+     * Configuration for rendering the tool's toolclip.
+     */
     toolclip?: ToolclipConfiguration;
 }
 
 interface ToolclipConfiguration {
-    /** The filename of the toolclip video. */
+    /**
+     * The filename of the toolclip video.
+     */
     src: string;
-    /** The heading string. */
+
+    /**
+     * The heading string.
+     */
     heading: string;
-    /** The items in the toolclip body. */
+
+    /**
+     * The items in the toolclip body.
+     */
     items: ToolclipConfigurationItem[];
 }
 
 interface ToolclipConfigurationItem {
-    /** A plain paragraph of content for this item. */
+    /**
+     * A plain paragraph of content for this item.
+     */
     paragraph?: string;
-    /** A heading for the item. */
+
+    /**
+     * A heading for the item.
+     */
     heading?: string;
-    /** Content for the item. */
+
+    /**
+     * Content for the item.
+     */
     content?: string;
-    /** If the item is a single key reference, use this instead of content. */
+
+    /**
+     * If the item is a single key reference, use this instead of content.
+     */
     reference?: string;
 }
 ```
@@ -281,7 +338,7 @@ export function mySampleModule() {
 
 A few handlebar helpers have also been registered to make common use cases easier.
 
-## Is GM
+### Is GM
 
 This will help in conditionally rendering some HTML depending on if the user is a GM or not.
 
