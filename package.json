@@ -22,9 +22,7 @@
     },
     "author": "DFreds (https://github.com/DFreds)",
     "license": "MIT",
-    "dependencies": {
-        "uuid": "^10.0.0"
-    },
+    "dependencies": {},
     "devDependencies": {
         "@pixi/graphics-smooth": "^1.1.0",
         "@pixi/particle-emitter": "5.0.8",
