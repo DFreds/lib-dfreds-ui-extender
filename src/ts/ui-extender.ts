@@ -87,6 +87,7 @@ class UiExtender {
             // TODO take logic into new module, with
             const {
                 tooltip,
+                toggle,
                 action,
                 icon,
                 location,
@@ -110,6 +111,9 @@ class UiExtender {
 
             if (onClick) {
                 button.on("click", (event: JQuery.ClickEvent) => {
+                    if (toggle) {
+                        button.toggleClass("active");
+                    }
                     onClick(event, data);
                 });
             }
@@ -186,6 +190,11 @@ interface HudButtonInput {
      * The tooltip when hovering on the HUD button
      */
     tooltip: string;
+
+    /**
+     * If the button will toggle active/inactive states
+     */
+    toggle?: boolean;
 
     /**
      * The name of action when clicking the button
