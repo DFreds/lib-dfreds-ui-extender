@@ -1,3 +1,5 @@
+name: Send to Discord
+
 on:
   release:
     types: [published]
