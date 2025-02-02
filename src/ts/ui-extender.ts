@@ -114,13 +114,13 @@ class UiExtender {
                     if (toggle) {
                         button.toggleClass("active");
                     }
-                    onClick(event, data);
+                    onClick(event, button, data);
                 });
             }
 
             if (onRightClick) {
                 button.on("contextmenu", (event: JQuery.ContextMenuEvent) => {
-                    onRightClick(event, data);
+                    onRightClick(event, button, data);
                 });
             }
 
@@ -223,17 +223,27 @@ interface HudButtonInput {
      * The click handler
      *
      * @param event The click event
+     * @param button The div containing the button
      * @param data The data for the item with the HUD
      */
-    onClick?: (event: JQuery.ClickEvent, data: any) => void;
+    onClick?: (
+        event: JQuery.ClickEvent,
+        button: JQuery<HTMLDivElement>,
+        data: any,
+    ) => void;
 
     /**
      * The right-click handler
      *
      * @param event The context menu event
+     * @param button The div containing the button
      * @param data The data for the item with the HUD
      */
-    onRightClick?: (event: JQuery.ContextMenuEvent, data: any) => void;
+    onRightClick?: (
+        event: JQuery.ContextMenuEvent,
+        button: JQuery<HTMLDivElement>,
+        data: any,
+    ) => void;
 }
 
 // interface SidebarInput {
