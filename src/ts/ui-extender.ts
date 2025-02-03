@@ -82,50 +82,56 @@ class UiExtender {
     #createHudButton(input: HudButtonInput): void {
         const type = input.hudType.capitalize();
 
-        // @ts-expect-error Ignore this, it can't do dynamic hook names
-        Hooks.on(`render${type}HUD`, (_hud: any, html: JQuery, data: any) => {
-            // TODO take logic into new module, with
-            const {
-                tooltip,
-                toggle,
-                action,
-                icon,
-                location,
-                predicate,
-                onClick,
-                onRightClick,
-            } = input;
+        Hooks.on(
+            `render${type}HUD`,
+            // @ts-expect-error Ignore this, it can't do dynamic hook names
+            (hud: BasePlaceableHUD, html: JQuery, data: object) => {
+                const {
+                    tooltip,
+                    action,
+                    icon,
+                    location,
+                    predicate,
+                    onClick,
+                    onRightClick,
+                    onRenderComplete,
+                } = input;
 
-            if (predicate && predicate(data) === false) return;
+                if (predicate && predicate(data) === false) return;
 
-            const button = $(document.createElement("div"));
+                const button = $(document.createElement("div"));
 
-            button.addClass("control-icon");
-            button.html(icon);
+                button.addClass("control-icon");
+                button.html(icon);
 
-            button.attr(
-                "data-action",
-                action ?? tooltip.toLowerCase().slugify(),
-            );
-            button.attr("data-tooltip", tooltip);
+                button.attr(
+                    "data-action",
+                    action ?? tooltip.toLowerCase().slugify(),
+                );
+                button.attr("data-tooltip", tooltip);
 
-            if (onClick) {
-                button.on("click", (event: JQuery.ClickEvent) => {
-                    if (toggle) {
-                        button.toggleClass("active");
-                    }
-                    onClick(event, button, data);
-                });
-            }
+                if (onClick) {
+                    button.on("click", (event: JQuery.ClickEvent) => {
+                        onClick(event, button, data);
+                    });
+                }
 
-            if (onRightClick) {
-                button.on("contextmenu", (event: JQuery.ContextMenuEvent) => {
-                    onRightClick(event, button, data);
-                });
-            }
+                if (onRightClick) {
+                    button.on(
+                        "contextmenu",
+                        (event: JQuery.ContextMenuEvent) => {
+                            onRightClick(event, button, data);
+                        },
+                    );
+                }
 
-            html.find(location).append(button);
-        });
+                html.find(location).append(button);
+
+                if (onRenderComplete) {
+                    onRenderComplete(hud, html, data);
+                }
+            },
+        );
     }
 
     #verifyModuleId(id: string): boolean {
@@ -192,11 +198,6 @@ interface HudButtonInput {
     tooltip: string;
 
     /**
-     * If the button will toggle active/inactive states
-     */
-    toggle?: boolean;
-
-    /**
      * The name of action when clicking the button
      */
     action?: string;
@@ -243,6 +244,19 @@ interface HudButtonInput {
         event: JQuery.ContextMenuEvent,
         button: JQuery<HTMLDivElement>,
         data: any,
+    ) => void;
+
+    /**
+     * The render complete handler
+     *
+     * @param hud The base placeable HUD instance
+     * @param html The html for the HUD
+     * @param data The data for the HUD
+     */
+    onRenderComplete?: (
+        hud: BasePlaceableHUD<any>,
+        html: JQuery,
+        data: object,
     ) => void;
 }
 
