@@ -11,8 +11,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Releases To Discord
-        uses: sillyangel/releases-to-discord@v1
+      - name: GitHub Releases To Discord
+        uses: SethCohen/github-releases-to-discord@v1.16.2
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          username: "Release Changelog"
+          username: "Lib: DFreds UI Extender - Release"
+          content: "||@all-updates @lib-dfreds-ui-extender||"
+          footer_timestamp: true
