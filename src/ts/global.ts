@@ -2,7 +2,7 @@ import { UiExtender } from "./ui-extender.ts";
 
 declare global {
     interface Window {
-        UiExtender: UiExtender;
+        uiExtender: UiExtender;
     }
 
     namespace globalThis {

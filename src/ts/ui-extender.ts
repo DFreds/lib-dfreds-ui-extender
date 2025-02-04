@@ -14,7 +14,7 @@ class UiExtender {
         const uiExtender = new UiExtender();
 
         (game.modules.get(MODULE_ID) as ThisModule).uiExtender = uiExtender;
-        window.UiExtender = uiExtender;
+        window.uiExtender = uiExtender;
 
         Hooks.callAll("uiExtender.init", uiExtender);
     }
