@@ -16,5 +16,5 @@ jobs:
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           username: "Lib: DFreds UI Extender - Release"
-          content: "@all-updates @lib-dfreds-ui-extender"
+          content: "<@&1200173776898371635> <@&1335058326014136391>"
           footer_timestamp: true
