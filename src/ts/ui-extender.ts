@@ -1,7 +1,5 @@
-import { MODULE_ID } from "./constants.ts";
 import { createHudButton } from "./hud-buttons/create-hud-button.ts";
 import { HudButtonInput } from "./hud-buttons/hud-button-input.ts";
-import { ThisModule } from "./module.ts";
 import { createSceneControl } from "./scene-controls/create-scene-control.ts";
 import { SceneControlInput } from "./scene-controls/scene-control-input.ts";
 
@@ -16,17 +14,12 @@ class UiExtender {
 
     static init(): void {
         const uiExtender = new UiExtender();
-
-        (game.modules.get(MODULE_ID) as ThisModule).uiExtender = uiExtender;
         window.uiExtender = uiExtender;
 
         Hooks.callAll("uiExtender.init", uiExtender);
     }
 
     static setup(): void {
-        const uiExtender = (game.modules.get(MODULE_ID) as ThisModule)
-            .uiExtender;
-
         uiExtender.createSceneControls();
         uiExtender.createHudButtons();
 

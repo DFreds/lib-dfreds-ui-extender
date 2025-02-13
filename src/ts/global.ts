@@ -49,6 +49,8 @@ declare global {
             CombatTracker<Combat | null>,
             Hotbar
         >;
+
+        let uiExtender: UiExtender;
     }
 
     type AnyFunction = (...args: any) => any;
