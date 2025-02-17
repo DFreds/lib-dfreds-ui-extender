@@ -355,8 +355,16 @@ Operators include:
 - `typeof`
 
 ```hbs
-{{#compare myDataString "===" "the string I want"}}
-    <p>myDataString is exactly equal to the string I want!</p>
+{{#compare myDataString.length ">" "the string I want"}}
+    <p>myDataString is longer than the string I want!</p>
+{{else}}
+    <p>myDataString is equal to or shorter than the string I want!</p>
+{{/compare}}
+```
+
+```hbs
+{{#compare "Test" "Test"}}
+    Default comparison of "==="
 {{/compare}}
 ```
 
