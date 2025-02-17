@@ -338,6 +338,28 @@ export function mySampleModule() {
 
 A few handlebar helpers have also been registered to make common use cases easier.
 
+### Compare
+
+This will help in conditionally rendering some HTML depending on two values and the operator provided.
+
+Operators include:
+
+- `==`
+- `===`
+- `!=`
+- `!==`
+- `<`
+- `>`
+- `<=`
+- `>=`
+- `typeof`
+
+```hbs
+{{#compare myDataString "===" "the string I want"}}
+    <p>myDataString is exactly equal to the string I want!</p>
+{{/compare}}
+```
+
 ### Is GM
 
 This will help in conditionally rendering some HTML depending on if the user is a GM or not.
@@ -356,7 +378,5 @@ This will help in conditionally rendering some HTML depending on if the user is 
 This will remove any HTML elements from a provided string.
 
 ```hbs
-<h4 class="entry-name document-name"><a
-    title="{{stripHtml effect.description}}"
->{{effect.name}}</a></h4>
+<h4><a title="{{stripHtml myHtmlString}}">Some link</a></h4>
 ```
