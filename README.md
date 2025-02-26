@@ -33,10 +33,6 @@
     <b>Lib: DFreds UI Extender</b> is a FoundryVTT module library that adds easy ways to extend the base Foundry UI.
 </p>
 
-## Note
-
-This library is still in beta, and will expand and change as it progresses. Please submit any feature requests on Github or on the Discord!
-
 ## Usage
 
 To use this in your own module, you can do any of the following:
