@@ -12,7 +12,7 @@ function createSceneControl(input: SceneControlInput): void {
             throw new Error(`Cannot find target control ${name}`);
         }
 
-        if (position && targetControl.tools.length > position) {
+        if (position !== undefined && targetControl.tools.length >= position) {
             targetControl.tools.splice(position, 0, tool);
         } else {
             targetControl.tools.push(tool);
