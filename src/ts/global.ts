@@ -1,4 +1,5 @@
 import { UiExtender } from "./ui-extender.ts";
+import EnJSON from "@static/lang/en.json" with { type: "json" };
 
 declare global {
     interface Window {
@@ -54,4 +55,7 @@ declare global {
     }
 
     type AnyFunction = (...args: any) => any;
+
+    const BUILD_MODE: "development" | "stage" | "production";
+    const EN_JSON: typeof EnJSON;
 }
