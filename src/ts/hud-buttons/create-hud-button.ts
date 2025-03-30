@@ -1,5 +1,3 @@
-import { HudButtonInput } from "./hud-button-input.ts";
-
 function createHudButton(input: HudButtonInput): void {
     const type = input.hudType.capitalize();
 

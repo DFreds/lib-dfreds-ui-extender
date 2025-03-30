@@ -1,7 +1,5 @@
 import { createHudButton } from "./hud-buttons/create-hud-button.ts";
-import { HudButtonInput } from "./hud-buttons/hud-button-input.ts";
 import { createSceneControl } from "./scene-controls/create-scene-control.ts";
-import { SceneControlInput } from "./scene-controls/scene-control-input.ts";
 
 class UiExtender {
     #sceneControls: SceneControlInput[];
@@ -20,8 +18,8 @@ class UiExtender {
     }
 
     static setup(): void {
-        uiExtender.createSceneControls();
-        uiExtender.createHudButtons();
+        (uiExtender as UiExtender).createSceneControls();
+        (uiExtender as UiExtender).createHudButtons();
 
         Hooks.callAll("uiExtender.setup", uiExtender);
     }

@@ -1,8 +1,3 @@
-import {
-    SceneControlInput,
-    SceneControlToolInput,
-} from "./scene-control-input.ts";
-
 function createSceneControl(input: SceneControlInput): void {
     Hooks.on(
         "getSceneControlButtons",
