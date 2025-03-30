@@ -6,7 +6,7 @@ function createHudButton(input: HudButtonInput): void {
     Hooks.on(
         `render${type}HUD`,
         // @ts-expect-error Ignore this, it can't do dynamic hook names
-        (hud: BasePlaceableHUD, html: JQuery, data: object) => {
+        (hud: BasePlaceableHUD, html: HTMLElement, data: object) => {
             const {
                 tooltip,
                 action,
@@ -38,10 +38,11 @@ function createHudButton(input: HudButtonInput): void {
                 });
             }
 
-            html.find(location).append(button);
+            const $html = $(html);
+            $html.find(location).append(button);
 
             if (onRenderComplete) {
-                onRenderComplete(hud, html, data);
+                onRenderComplete(hud, $html, data);
             }
         },
     );
@@ -55,8 +56,8 @@ function generateButton({
     icon: string;
     action?: string;
     tooltip: string;
-}): JQuery<HTMLDivElement> {
-    const button = $(document.createElement("div"));
+}): JQuery<HTMLButtonElement> {
+    const button = $(document.createElement("button"));
 
     button.addClass("control-icon");
     button.html(icon);

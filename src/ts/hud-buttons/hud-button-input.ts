@@ -41,25 +41,21 @@ interface HudButtonInput {
      * The click handler
      *
      * @param event The click event
-     * @param button The div containing the button
+     * @param button The button element
      * @param data The data for the item with the HUD
      */
-    onClick?: (
-        event: JQuery.ClickEvent,
-        button: JQuery<HTMLDivElement>,
-        data: any,
-    ) => void;
+    onClick?: (event: JQuery.ClickEvent, button: JQuery, data: any) => void;
 
     /**
      * The right-click handler
      *
      * @param event The context menu event
-     * @param button The div containing the button
+     * @param button The button element
      * @param data The data for the item with the HUD
      */
     onRightClick?: (
         event: JQuery.ContextMenuEvent,
-        button: JQuery<HTMLDivElement>,
+        button: JQuery,
         data: any,
     ) => void;
 
