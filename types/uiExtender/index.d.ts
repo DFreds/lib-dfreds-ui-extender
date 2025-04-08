@@ -53,7 +53,7 @@ declare global {
     }
 
     export interface SceneControlToolInput {
-        /** The name of the tool */
+        /** The name of the tool. This should be camelCase for maximum compatibility. */
         name: string;
         /** The order of the tool */
         order?: number;
