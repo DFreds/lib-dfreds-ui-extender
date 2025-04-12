@@ -57,6 +57,7 @@ function generateButton({
 }): JQuery<HTMLButtonElement> {
     const button = $(document.createElement("button"));
 
+    button.attr("type", "button");
     button.addClass("control-icon");
     button.html(icon);
 
