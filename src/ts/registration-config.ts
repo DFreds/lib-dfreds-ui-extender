@@ -28,8 +28,8 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
             minimizable: true,
         },
         position: {
-            width: 600,
-            height: 800,
+            width: 780,
+            height: 680,
         },
     };
 
