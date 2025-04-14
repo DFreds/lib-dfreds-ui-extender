@@ -1,3 +1,26 @@
-.nothing-to-use {
-    font-size: large;
+#registration-config .window-content {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
 }
+#registration-config .window-content > nav.tabs {
+    align-items: start;
+    border: none;
+    flex-direction: column;
+    font-size: var(--font-size-12);
+    gap: 0;
+    justify-content: start;
+    line-height: 3;
+}
+#registration-config .window-content > nav.tabs > a {
+    text-align: left;
+    width: 100%;
+}
+#registration-config .window-content > nav.tabs > a:not(:first-of-type) {
+    border-top: 1px solid var(--color-dark-6);
+}
+#registration-config .subtab {
+    padding-bottom: 2px;
+}
+// #registration-config .tab-content {
+//     hei
+// }

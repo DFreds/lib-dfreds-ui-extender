@@ -1,0 +1,31 @@
+<div>
+    {{#each tabs as |tab|}}
+        <section class="tab {{tab.cssClass}}" data-tab="{{tab.id}}" data-group="{{tab.group}}">
+            {{> "templates/generic/tab-navigation.hbs" tabs=tab.subtabs}}
+
+            {{#with tab.subtabs.hud as |subtab|}}
+                <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
+                    {{#if subtab.data.items}}
+                        {{#each subtab.data.items as |hudButton|}}
+                            {{> (lookup @root "hudButtonPartial") hudButton=hudButton}}
+                        {{/each}}
+                    {{else}}
+                        <p>{{localize "UiExtender.RegistrationConfig.HudButton.NoHudButtons"}}</p>
+                    {{/if}}
+                </div>
+            {{/with}}
+
+            {{#with tab.subtabs.sceneControls as |subtab|}}
+                <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
+                    {{#if subtab.data.items}}
+                        {{#each subtab.data.items as |sceneControl|}}
+                            {{> (lookup @root "sceneControlPartial") sceneControl=sceneControl}}
+                        {{/each}}
+                    {{else}}
+                        <p>{{localize "UiExtender.RegistrationConfig.SceneControl.NoSceneControls"}}</p>
+                    {{/if}}
+                </div>
+            {{/with}}
+        </section>
+    {{/each}}
+</div>

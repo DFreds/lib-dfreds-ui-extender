@@ -1,0 +1,51 @@
+<fieldset>
+    <legend>{{{hudButton.icon}}} {{localize hudButton.tooltip}}</legend>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.ModuleIdLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{hudButton.moduleId}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.HudTypeLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{hudButton.hudType}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.TooltipLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{localize hudButton.tooltip}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.ActionLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{hudButton.action}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.IconLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{hudButton.icon}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.LocationLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{hudButton.location}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.PredicateLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{#if (ne hudButton.predicate undefined)}}Yes{{else}}No{{/if}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.HudButton.HandlersLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{#if (ne hudButton.onClick undefined)}}onClick{{/if}}{{#if (ne hudButton.onRightClick undefined)}}, onRightClick{{/if}}{{#if (ne hudButton.onRenderComplete undefined)}}, onRenderComplete{{/if}}" disabled />
+        </div>
+    </div>
+</fieldset>

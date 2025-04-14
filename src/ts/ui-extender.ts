@@ -24,6 +24,14 @@ class UiExtender {
         Hooks.callAll("uiExtender.setup", uiExtender);
     }
 
+    get _sceneControls(): SceneControlInput[] {
+        return this.#sceneControls;
+    }
+
+    get _hudButtons(): HudButtonInput[] {
+        return this.#hudButtons;
+    }
+
     registerSceneControl(input: SceneControlInput): void {
         if (this.#verifyModuleId(input.moduleId)) {
             this.#sceneControls.push(input);

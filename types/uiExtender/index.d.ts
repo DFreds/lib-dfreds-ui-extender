@@ -16,6 +16,16 @@ declare global {
          * @param input The HUD button input
          */
         registerHudButton(input: HudButtonInput): void;
+
+        /**
+         * Get the scene controls. Meant for internal use only.
+         */
+        get _sceneControls(): SceneControlInput[];
+
+        /**
+         * Get the HUD buttons. Meant for internal use only.
+         */
+        get _hudButtons(): HudButtonInput[];
     }
 
     export interface SceneControlInput {
