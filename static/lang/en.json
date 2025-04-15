@@ -13,7 +13,7 @@
                 "LocationLabel": "Location",
                 "PredicateLabel": "Has Predicate",
                 "HandlersLabel": "Event Handlers",
-                "NoHudButtons": "No HUD buttons registered"
+                "NoHudButtons": "No HUD buttons registered for {moduleId}"
             },
             "SceneControl": {
                 "ModuleIdLabel": "Module ID",
@@ -25,7 +25,7 @@
                 "ToolIconLabel": "Tool Icon",
                 "ToolPropertiesLabel": "Tool Properties",
                 "ToolclipLabel": "Toolclip Heading",
-                "NoSceneControls": "No scene controls registered"
+                "NoSceneControls": "No scene controls registered for {moduleId}"
             }
         },
         "Settings": {

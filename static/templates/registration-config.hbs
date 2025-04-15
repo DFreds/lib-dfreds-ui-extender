@@ -10,7 +10,9 @@
                             {{> (lookup @root "hudButtonPartial") hudButton=hudButton}}
                         {{/each}}
                     {{else}}
-                        <p>{{localize "UiExtender.RegistrationConfig.HudButton.NoHudButtons"}}</p>
+                        <p class="no-items">
+                            {{localize "UiExtender.RegistrationConfig.HudButton.NoHudButtons" moduleId=tab.id}}
+                        </p>
                     {{/if}}
                 </div>
             {{/with}}
@@ -22,7 +24,9 @@
                             {{> (lookup @root "sceneControlPartial") sceneControl=sceneControl}}
                         {{/each}}
                     {{else}}
-                        <p>{{localize "UiExtender.RegistrationConfig.SceneControl.NoSceneControls"}}</p>
+                        <p class="no-items">
+                            {{localize "UiExtender.RegistrationConfig.SceneControl.NoSceneControls" moduleId=tab.id}}
+                        </p>
                     {{/if}}
                 </div>
             {{/with}}
