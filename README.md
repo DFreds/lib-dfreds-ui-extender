@@ -39,6 +39,7 @@
 
 - Easily add new scene controls to any layer controls (token, tiles, drawings, walls, etc.)
 - Easily add new HUD controls to tokens, tiles, or drawings
+- Easily add new sidebar directories
 
 ## Getting Started
 

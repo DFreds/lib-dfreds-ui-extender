@@ -1,13 +1,16 @@
+import { createDirectory } from "./directories/create-directories.ts";
 import { createHudButton } from "./hud-buttons/create-hud-button.ts";
 import { createSceneControl } from "./scene-controls/create-scene-control.ts";
 
 class UiExtender {
     #sceneControls: SceneControlInput[];
     #hudButtons: HudButtonInput[];
+    #directories: DirectoryInput[];
 
     constructor() {
         this.#sceneControls = [];
         this.#hudButtons = [];
+        this.#directories = [];
     }
 
     static init(): void {
@@ -20,6 +23,7 @@ class UiExtender {
     static setup(): void {
         (uiExtender as UiExtender).createSceneControls();
         (uiExtender as UiExtender).createHudButtons();
+        (uiExtender as UiExtender).createDirectories();
 
         Hooks.callAll("uiExtender.setup", uiExtender);
     }
@@ -30,6 +34,10 @@ class UiExtender {
 
     get _hudButtons(): HudButtonInput[] {
         return this.#hudButtons;
+    }
+
+    get _directories(): DirectoryInput[] {
+        return this.#directories;
     }
 
     registerSceneControl(input: SceneControlInput): void {
@@ -56,6 +64,18 @@ class UiExtender {
 
     createHudButtons(): void {
         this.#hudButtons.forEach((hudButton) => createHudButton(hudButton));
+    }
+
+    registerDirectory(input: DirectoryInput): void {
+        if (this.#verifyModuleId(input.moduleId)) {
+            this.#directories.push(input);
+        } else {
+            throw new Error(`Invalid moduleId ${input.moduleId}`);
+        }
+    }
+
+    createDirectories(): void {
+        this.#directories.forEach((directory) => createDirectory(directory));
     }
 
     #verifyModuleId(id: string): boolean {

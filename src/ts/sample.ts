@@ -1,10 +1,40 @@
+import { ApplicationConfiguration } from "types/foundry/client-esm/applications/_types.js";
 import { MODULE_ID } from "./constants.ts";
 import { UiExtender } from "./ui-extender.ts";
+import { HandlebarsTemplatePart } from "types/foundry/client-esm/applications/api/handlebars-application.ts";
+
+const { AbstractSidebarTab } = foundry.applications.sidebar;
+const { HandlebarsApplicationMixin } = foundry.applications.api;
+
+class SampleApplication extends HandlebarsApplicationMixin(AbstractSidebarTab) {
+    static override DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
+        window: {
+            title: "Sample",
+        },
+    };
+
+    static override PARTS: Record<string, HandlebarsTemplatePart> = {
+        sample: {
+            template: `modules/${MODULE_ID}/templates/sample.hbs`,
+        },
+    };
+
+    static override tabName: string = "sample";
+}
 
 // Module usage
 export function mySampleModule(): void {
     // @ts-expect-error Type mismatch
     Hooks.once("uiExtender.init", (uiExtender: UiExtender) => {
+        uiExtender.registerDirectory({
+            moduleId: MODULE_ID,
+            id: "sample",
+            tooltip: "Sample",
+            icon: "fas fa-robot",
+            order: 1,
+            applicationClass: SampleApplication,
+        });
+
         uiExtender.registerSceneControl({
             moduleId: MODULE_ID,
             name: "tokens",

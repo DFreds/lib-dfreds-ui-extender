@@ -3,6 +3,11 @@ declare class Sidebar extends Application {
     /** Singleton application instances for each sidebar tab */
     tabs: Tabs;
 
+    static TABS: Record<
+        string,
+        { tooltip?: string; icon?: string; documentName?: string }
+    >;
+
     /** Track whether the sidebar container is currently collapsed */
     _collapsed: boolean;
 
