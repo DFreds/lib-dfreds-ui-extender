@@ -34,6 +34,11 @@ declare global {
          * Get the HUD buttons. Meant for internal use only.
          */
         get _hudButtons(): HudButtonInput[];
+
+        /**
+         * Get the directories. Meant for internal use only.
+         */
+        get _directories(): DirectoryInput[];
     }
 
     export interface SceneControlInput {

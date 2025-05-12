@@ -4,13 +4,17 @@ import {
     ApplicationTab,
 } from "types/foundry/client-esm/applications/_types.js";
 import { HandlebarsTemplatePart } from "types/foundry/client-esm/applications/api/handlebars-application.ts";
-import { MODULE_ID } from "./constants.ts";
+import { MODULE_ID } from "../constants.ts";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 interface ModuleTab extends Partial<ApplicationTab> {
     data: {
-        registrations: { hudButtons: any[]; sceneControls: any[] };
+        registrations: {
+            hudButtons: any[];
+            sceneControls: any[];
+            directories: any[];
+        };
     };
     subtabs: Record<string, ApplicationTab>;
 }
@@ -37,6 +41,8 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
 
     static _sceneControlPartial = `modules/${MODULE_ID}/templates/partials/scene-control.hbs`;
 
+    static _directoryPartial = `modules/${MODULE_ID}/templates/partials/directory.hbs`;
+
     static override PARTS: Record<string, HandlebarsTemplatePart> = {
         tabs: {
             template: "templates/generic/tab-navigation.hbs",
@@ -47,6 +53,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
             templates: [
                 RegistrationConfig._hudButtonPartial,
                 RegistrationConfig._sceneControlPartial,
+                RegistrationConfig._directoryPartial,
             ],
             scrollable: [".tab-content"],
         },
@@ -63,7 +70,14 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
         ),
         ...uiExtender._sceneControls.reduce(
             (acc: Record<string, string>, sceneControl) => {
-                acc[sceneControl.moduleId] = "hud";
+                acc[sceneControl.moduleId] = "sceneControls";
+                return acc;
+            },
+            {},
+        ),
+        ...uiExtender._directories.reduce(
+            (acc: Record<string, string>, directory) => {
+                acc[directory.moduleId] = "directories";
                 return acc;
             },
             {},
@@ -73,11 +87,16 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
     #prepareTabs(): Record<string, Partial<ApplicationTab>> {
         const hudButtons = uiExtender._hudButtons;
         const sceneControls = uiExtender._sceneControls;
+        const directories = uiExtender._directories;
 
         // Create a map of module IDs to their registrations
         const moduleRegistrations = new Map<
             string,
-            { hudButtons: any[]; sceneControls: any[] }
+            {
+                hudButtons: any[];
+                sceneControls: any[];
+                directories: any[];
+            }
         >();
 
         // Process hudButtons
@@ -86,6 +105,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 moduleRegistrations.set(hudButton.moduleId, {
                     hudButtons: [],
                     sceneControls: [],
+                    directories: [],
                 });
             }
             moduleRegistrations
@@ -99,11 +119,26 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 moduleRegistrations.set(sceneControl.moduleId, {
                     hudButtons: [],
                     sceneControls: [],
+                    directories: [],
                 });
             }
             moduleRegistrations
                 .get(sceneControl.moduleId)!
                 .sceneControls.push(sceneControl);
+        }
+
+        // Process directories
+        for (const directory of directories) {
+            if (!moduleRegistrations.has(directory.moduleId)) {
+                moduleRegistrations.set(directory.moduleId, {
+                    hudButtons: [],
+                    sceneControls: [],
+                    directories: [],
+                });
+            }
+            moduleRegistrations
+                .get(directory.moduleId)!
+                .directories.push(directory);
         }
 
         const subtabData: Record<string, Partial<ApplicationTab>> = {
@@ -116,6 +151,11 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 id: "sceneControls",
                 label: "UiExtender.RegistrationConfig.SceneControls",
                 icon: "fa-solid fa-dial-med",
+            },
+            directories: {
+                id: "directories",
+                label: "UiExtender.RegistrationConfig.Directories",
+                icon: "fa-solid fa-folder-open",
             },
         };
 
@@ -132,7 +172,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 data: {
                     registrations,
                 },
-                subtabs: ["hud", "sceneControls"].reduce(
+                subtabs: ["hud", "sceneControls", "directories"].reduce(
                     (subtabs: any, subtabId) => {
                         const group = moduleId;
                         const active = this.tabGroups[group] === subtabId;
@@ -146,7 +186,9 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                                 items:
                                     subtabId === "hud"
                                         ? registrations.hudButtons
-                                        : registrations.sceneControls,
+                                        : subtabId === "sceneControls"
+                                          ? registrations.sceneControls
+                                          : registrations.directories,
                             },
                         };
                         return subtabs;
@@ -169,6 +211,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
             rootId: this.id,
             hudButtonPartial: RegistrationConfig._hudButtonPartial,
             sceneControlPartial: RegistrationConfig._sceneControlPartial,
+            directoryPartial: RegistrationConfig._directoryPartial,
         });
     }
 }

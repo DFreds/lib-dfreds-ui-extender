@@ -3,6 +3,9 @@ class HandlebarHelpers {
         this.#registerCompare();
         this.#registerIsGm();
         this.#registerStripHtml();
+
+        this.#registerDirectoryName();
+        this.#registerDirectoryIcon();
     }
 
     /* http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates */
@@ -85,6 +88,34 @@ class HandlebarHelpers {
             const regExp = /<[/\w]+>/g;
             return new Handlebars.SafeString(str.replace(regExp, ""));
         });
+    }
+
+    #registerDirectoryName() {
+        Handlebars.registerHelper(
+            "libUiExtenderDirectoryName",
+            (directory: DirectoryInput) => {
+                if (directory.documentName) {
+                    // @ts-expect-error Does not like this
+                    return CONFIG[directory.documentName]?.documentClass;
+                } else {
+                    return directory.tooltip;
+                }
+            },
+        );
+    }
+
+    #registerDirectoryIcon() {
+        Handlebars.registerHelper(
+            "libUiExtenderDirectoryIcon",
+            (directory: DirectoryInput) => {
+                if (directory.documentName) {
+                    // @ts-expect-error Does not like this
+                    return CONFIG[directory.documentName]?.sidebarIcon;
+                } else {
+                    return directory.icon;
+                }
+            },
+        );
     }
 }
 

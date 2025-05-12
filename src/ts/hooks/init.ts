@@ -1,4 +1,4 @@
-import { HandlebarHelpers } from "../handlebar-helpers.ts";
+import { HandlebarHelpers } from "../ui/handlebar-helpers.ts";
 import { UiExtender } from "../ui-extender.ts";
 import { Listener } from "./index.ts";
 import { Settings } from "../settings.ts";

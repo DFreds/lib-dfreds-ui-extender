@@ -30,6 +30,20 @@
                     {{/if}}
                 </div>
             {{/with}}
+
+            {{#with tab.subtabs.directories as |subtab|}}
+                <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
+                    {{#if subtab.data.items}}
+                        {{#each subtab.data.items as |directory|}}
+                            {{> (lookup @root "directoryPartial") directory=directory}}
+                        {{/each}}
+                    {{else}}
+                        <p class="no-items">
+                            {{localize "UiExtender.RegistrationConfig.Directory.NoDirectories" moduleId=tab.id}}
+                        </p>
+                    {{/if}}
+                </div>
+            {{/with}}
         </section>
     {{/each}}
 </div>

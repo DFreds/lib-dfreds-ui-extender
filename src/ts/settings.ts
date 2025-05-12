@@ -1,5 +1,5 @@
 import { MODULE_ID } from "./constants.ts";
-import { RegistrationConfig } from "./registration-config.ts";
+import { RegistrationConfig } from "./ui/registration-config.ts";
 
 class Settings {
     #REGISTRATION_CONFIG = "registrationConfig";
