@@ -33,6 +33,9 @@ export function mySampleModule(): void {
             icon: "fas fa-robot",
             order: 1,
             applicationClass: SampleApplication,
+            predicate: () => {
+                return true;
+            },
         });
 
         uiExtender.registerSceneControl({
