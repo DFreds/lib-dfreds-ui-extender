@@ -1,7 +1,7 @@
 {
     "id": "lib-dfreds-ui-extender",
     "title": "Lib: DFreds UI Extender",
-    "description": "A FoundryVTT template module using typescript and vite",
+    "description": "A FoundryVTT library that adds easy ways to extend the base Foundry UI.",
     "version": "2.1.1",
     "compatibility": {
         "minimum": 13,
