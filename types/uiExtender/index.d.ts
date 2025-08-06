@@ -270,4 +270,6 @@ declare global {
         function once(...args: HookParamsUiExtenderInit): number;
         function once(...args: HookParamsUiExtenderSetup): number;
     }
+
+    let uiExtender: UiExtender;
 }

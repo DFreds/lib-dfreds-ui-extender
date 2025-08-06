@@ -10,7 +10,6 @@ class Settings {
             label: "UiExtender.Settings.RegistrationConfig.Name",
             hint: "UiExtender.Settings.RegistrationConfig.Hint",
             icon: "fa-solid fa-gears",
-            // @ts-expect-error Not sure why
             type: RegistrationConfig,
             restricted: true,
         });

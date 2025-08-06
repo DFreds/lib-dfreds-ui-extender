@@ -1,7 +1,7 @@
-import { ApplicationConfiguration } from "types/foundry/client-esm/applications/_types.js";
+import { HandlebarsTemplatePart } from "@client/applications/api/_module.mjs";
 import { MODULE_ID } from "./constants.ts";
 import { UiExtender } from "./ui-extender.ts";
-import { HandlebarsTemplatePart } from "types/foundry/client-esm/applications/api/handlebars-application.ts";
+import { ApplicationConfiguration } from "@client/applications/_module.mjs";
 
 const { AbstractSidebarTab } = foundry.applications.sidebar;
 const { HandlebarsApplicationMixin } = foundry.applications.api;

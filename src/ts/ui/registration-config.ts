@@ -1,10 +1,6 @@
-import {
-    ApplicationConfiguration,
-    ApplicationRenderOptions,
-    ApplicationTab,
-} from "types/foundry/client-esm/applications/_types.js";
-import { HandlebarsTemplatePart } from "types/foundry/client-esm/applications/api/handlebars-application.ts";
+import { ApplicationConfiguration, ApplicationRenderOptions, ApplicationTab } from "@client/applications/_module.mjs";
 import { MODULE_ID } from "../constants.ts";
+import { HandlebarsTemplatePart } from "@client/applications/api/_module.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 

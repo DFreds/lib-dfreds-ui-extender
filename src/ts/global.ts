@@ -38,6 +38,10 @@ type ConfiguredConfig = Config<
 >;
 
 declare global {
+    interface Window {
+        uiExtender: UiExtender;
+    }
+
     const CONFIG: ConfiguredConfig;
     const canvas: Canvas;
 
