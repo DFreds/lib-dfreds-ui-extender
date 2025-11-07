@@ -1,6 +1,7 @@
 import { ApplicationConfiguration, ApplicationRenderOptions, ApplicationTab } from "@client/applications/_module.mjs";
 import { MODULE_ID } from "../constants.ts";
 import { HandlebarsTemplatePart } from "@client/applications/api/_module.mjs";
+import { UiExtenderImpl } from "../ui-extender.ts";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -57,21 +58,21 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
 
     override tabGroups: Record<string, string> = {
         main: "base",
-        ...uiExtender._hudButtons.reduce(
+        ...(uiExtender as UiExtenderImpl)._hudButtons.reduce(
             (acc: Record<string, string>, hudButton) => {
                 acc[hudButton.moduleId] = "hud";
                 return acc;
             },
             {},
         ),
-        ...uiExtender._sceneControls.reduce(
+        ...(uiExtender as UiExtenderImpl)._sceneControls.reduce(
             (acc: Record<string, string>, sceneControl) => {
                 acc[sceneControl.moduleId] = "sceneControls";
                 return acc;
             },
             {},
         ),
-        ...uiExtender._directories.reduce(
+        ...(uiExtender as UiExtenderImpl)._directories.reduce(
             (acc: Record<string, string>, directory) => {
                 acc[directory.moduleId] = "directories";
                 return acc;
@@ -81,9 +82,9 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
     };
 
     #prepareTabs(): Record<string, Partial<ApplicationTab>> {
-        const hudButtons = uiExtender._hudButtons;
-        const sceneControls = uiExtender._sceneControls;
-        const directories = uiExtender._directories;
+        const hudButtons = (uiExtender as UiExtenderImpl)._hudButtons;
+        const sceneControls = (uiExtender as UiExtenderImpl)._sceneControls;
+        const directories = (uiExtender as UiExtenderImpl)._directories;
 
         // Create a map of module IDs to their registrations
         const moduleRegistrations = new Map<

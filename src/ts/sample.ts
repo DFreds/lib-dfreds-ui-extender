@@ -1,6 +1,5 @@
 import { HandlebarsTemplatePart } from "@client/applications/api/_module.mjs";
 import { MODULE_ID } from "./constants.ts";
-import { UiExtender } from "./ui-extender.ts";
 import { ApplicationConfiguration } from "@client/applications/_module.mjs";
 
 const { AbstractSidebarTab } = foundry.applications.sidebar;

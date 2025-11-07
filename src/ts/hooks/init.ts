@@ -1,5 +1,5 @@
 import { HandlebarHelpers } from "../ui/handlebar-helpers.ts";
-import { UiExtender } from "../ui-extender.ts";
+import { UiExtenderImpl } from "../ui-extender.ts";
 import { Listener } from "./index.ts";
 import { Settings } from "../settings.ts";
 
@@ -8,7 +8,7 @@ const Init: Listener = {
         Hooks.once("init", () => {
             new HandlebarHelpers().register();
             new Settings().register();
-            UiExtender.init();
+            UiExtenderImpl.init();
         });
     },
 };

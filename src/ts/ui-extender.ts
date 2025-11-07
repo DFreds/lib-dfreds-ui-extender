@@ -2,7 +2,7 @@ import { createDirectory } from "./directories/create-directories.ts";
 import { createHudButton } from "./hud-buttons/create-hud-button.ts";
 import { createSceneControl } from "./scene-controls/create-scene-control.ts";
 
-class UiExtender {
+class UiExtenderImpl implements UiExtender {
     #sceneControls: SceneControlInput[];
     #hudButtons: HudButtonInput[];
     #directories: DirectoryInput[];
@@ -14,16 +14,16 @@ class UiExtender {
     }
 
     static init(): void {
-        const uiExtender = new UiExtender();
-        window.uiExtender = uiExtender;
+        const uiExtender = new UiExtenderImpl();
+        window.uiExtender = uiExtender as UiExtender;
 
-        Hooks.callAll("uiExtender.init", uiExtender);
+        Hooks.callAll("uiExtender.init", window.uiExtender);
     }
 
     static setup(): void {
-        (uiExtender as UiExtender).createSceneControls();
-        (uiExtender as UiExtender).createHudButtons();
-        (uiExtender as UiExtender).createDirectories();
+        (uiExtender as UiExtenderImpl).#createSceneControls();
+        (uiExtender as UiExtenderImpl).#createHudButtons();
+        (uiExtender as UiExtenderImpl).#createDirectories();
 
         Hooks.callAll("uiExtender.setup", uiExtender);
     }
@@ -48,7 +48,7 @@ class UiExtender {
         }
     }
 
-    createSceneControls(): void {
+    #createSceneControls(): void {
         this.#sceneControls.forEach((sceneControl) =>
             createSceneControl(sceneControl),
         );
@@ -62,7 +62,7 @@ class UiExtender {
         }
     }
 
-    createHudButtons(): void {
+    #createHudButtons(): void {
         this.#hudButtons.forEach((hudButton) => createHudButton(hudButton));
     }
 
@@ -74,7 +74,7 @@ class UiExtender {
         }
     }
 
-    createDirectories(): void {
+    #createDirectories(): void {
         this.#directories.forEach((directory) => createDirectory(directory));
     }
 
@@ -82,17 +82,6 @@ class UiExtender {
         const mod = game.modules.get(id);
         return !!mod;
     }
-
-    // https://github.com/p4535992/dfreds-convenient-effects/commit/02785d5cacef116e44816ff14705c8638b6c67bc
 }
 
-// interface SidebarInput {
-// sidebar: Application | ApplicationV2 | SidebarTab;
-// tabId: string;
-// ariaLabel: string;
-// tooltip: string;
-// icon: string;
-// onRender: () => void;
-// }
-
-export { UiExtender };
+export { UiExtenderImpl };

@@ -1,3 +1,4 @@
+import { UiExtenderImpl } from "../ui-extender.ts";
 import { Listener } from "./index.ts";
 
 const RenderSidebar: Listener = {
@@ -5,7 +6,7 @@ const RenderSidebar: Listener = {
         Hooks.once("renderSidebar", () => {
             // Delete directories that d that have a predicate that returns false
 
-            const directories = window.uiExtender._directories;
+            const directories = (window.uiExtender as UiExtenderImpl)._directories;
 
             directories.forEach((directory) => {
                 if (directory.predicate && !directory.predicate()) {

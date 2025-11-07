@@ -1,4 +1,4 @@
-import { UiExtender } from "../ui-extender.ts";
+import { UiExtenderImpl } from "../ui-extender.ts";
 import { Listener } from "./index.ts";
 
 const Setup: Listener = {
@@ -8,7 +8,7 @@ const Setup: Listener = {
                 CONFIG.debug.hooks = true;
             }
 
-            UiExtender.setup();
+            UiExtenderImpl.setup();
         });
     },
 };
