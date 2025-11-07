@@ -51,7 +51,6 @@
         "./src/**/*",
         "./tests/**/*.ts",
         "./types/foundry/global-external.d.mts",
-        "./types/libWrapper/index.d.ts",
         "./types/uiExtender/index.d.ts",
         "./vite.config.ts"
     ],
