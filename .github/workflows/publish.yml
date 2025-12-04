@@ -1,4 +1,4 @@
-name: Send to Discord
+name: Publish
 
 on:
   release:
@@ -18,3 +18,11 @@ jobs:
           username: "Lib: DFreds UI Extender - Release"
           content: "<@&1200173776898371635> <@&1335058326014136391>"
           footer_timestamp: true
+
+      - name: Publish Module to FoundryVTT Website
+        id: publish-to-foundry-website
+        uses: cs96and/FoundryVTT-release-package@v1
+        with:
+          package-token: ${{ secrets.PACKAGE_TOKEN }}
+          manifest-url: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json
+          notes-url: https://github.com/${{github.repository}}/releases/tag/${{github.event.release.tag_name}}
