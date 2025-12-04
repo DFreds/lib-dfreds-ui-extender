@@ -1,6 +1,7 @@
 import { HandlebarsTemplatePart } from "@client/applications/api/_module.mjs";
 import { MODULE_ID } from "./constants.ts";
 import { ApplicationConfiguration } from "@client/applications/_module.mjs";
+import { BasePlaceableHUD } from "@client/applications/hud/_module.mjs";
 
 const { AbstractSidebarTab } = foundry.applications.sidebar;
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -66,6 +67,7 @@ export function mySampleModule(): void {
                 _event: JQuery.ClickEvent,
                 _button: JQuery,
                 _token: any,
+                _hud: BasePlaceableHUD,
             ) => {
                 console.log("clicked");
             },
@@ -73,6 +75,7 @@ export function mySampleModule(): void {
                 _event: JQuery.ContextMenuEvent,
                 _button: JQuery,
                 _token: any,
+                _hud: BasePlaceableHUD,
             ) => {
                 console.log("right clicked");
             },
@@ -88,6 +91,7 @@ export function mySampleModule(): void {
                 _event: JQuery.ClickEvent,
                 _button: JQuery,
                 tile: any,
+                _hud: BasePlaceableHUD,
             ) => {
                 console.log("clicked", tile);
             },
@@ -95,6 +99,7 @@ export function mySampleModule(): void {
                 _event: JQuery.ContextMenuEvent,
                 _button: JQuery,
                 tile: any,
+                _hud: BasePlaceableHUD,
             ) => {
                 console.log("right clicked", tile);
             },
@@ -110,6 +115,7 @@ export function mySampleModule(): void {
                 _event: JQuery.ClickEvent,
                 _button: JQuery,
                 drawing: any,
+                _hud: BasePlaceableHUD,
             ) => {
                 ui.notifications.info(
                     `Hello from drawing ${drawing.fillColor}`,

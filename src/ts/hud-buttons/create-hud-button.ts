@@ -26,13 +26,13 @@ function createHudButton(input: HudButtonInput): void {
 
             if (onClick) {
                 button.on("click", (event: JQuery.ClickEvent) => {
-                    onClick(event, button, data);
+                    onClick(event, button, data, hud);
                 });
             }
 
             if (onRightClick) {
                 button.on("contextmenu", (event: JQuery.ContextMenuEvent) => {
-                    onRightClick(event, button, data);
+                    onRightClick(event, button, data, hud);
                 });
             }
 
