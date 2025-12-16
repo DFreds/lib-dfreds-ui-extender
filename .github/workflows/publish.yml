@@ -5,7 +5,7 @@ on:
     types: [released]
 
 jobs:
-  github-releases-to-discord:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
