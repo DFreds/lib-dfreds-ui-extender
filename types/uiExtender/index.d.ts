@@ -212,7 +212,7 @@ declare global {
         id: string;
 
         /**
-         * The tab's tooltip
+         * The directory's tooltip
          */
         tooltip?: string;
 
