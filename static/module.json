@@ -4,8 +4,8 @@
     "description": "A FoundryVTT library that adds easy ways to extend the base Foundry UI.",
     "version": "2.1.1",
     "compatibility": {
-        "minimum": 13,
-        "verified": 13
+        "minimum": 14,
+        "verified": 14
     },
     "esmodules": ["lib-dfreds-ui-extender.mjs"],
     "scripts": [],
