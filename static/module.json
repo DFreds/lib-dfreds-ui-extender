@@ -2,7 +2,7 @@
     "id": "lib-dfreds-ui-extender",
     "title": "Lib: DFreds UI Extender",
     "description": "A FoundryVTT library that adds easy ways to extend the base Foundry UI.",
-    "version": "2.1.1",
+    "version": "2.3.0",
     "compatibility": {
         "minimum": 14,
         "verified": 14
