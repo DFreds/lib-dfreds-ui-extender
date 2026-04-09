@@ -1,6 +1,6 @@
 import { ApplicationV2 } from "types/foundry/client-esm/applications/_types.js";
 
-export {};
+export { };
 
 declare global {
     interface Window {
@@ -40,15 +40,15 @@ declare global {
          * The name of the control layer
          */
         name:
-            | "tokens"
-            | "templates"
-            | "tiles"
-            | "drawings"
-            | "walls"
-            | "lighting"
-            | "sounds"
-            | "regions"
-            | "notes";
+        | "tokens"
+        | "templates"
+        | "tiles"
+        | "drawings"
+        | "walls"
+        | "lighting"
+        | "sounds"
+        | "regions"
+        | "notes";
 
         /**
          * The predicate to determine if the control should be visible
@@ -65,25 +65,35 @@ declare global {
     }
 
     export interface SceneControlToolInput {
-        /** The name of the tool. This should be camelCase for maximum compatibility. */
+        /* An identifier for the tool, unique among the tools of its SceneControl. This should be camelCase for maximum compatibility. */
         name: string;
-        /** The order of the tool */
+        /** An integer indicating the tool's order, with 0 being at the top. If not provided, the tool will be added to the end of the list. */
         order?: number;
-        /** The title of the tool */
+        /** A title for the tool: can be a localization path */
         title: string;
-        /** The icon of the tool */
+        /** One or more icon classes for the tool, typically Font Awesome classes such as "fa-solid fa-face-smile" */
         icon: string;
-        /** Whether the tool is visible */
+        /** Whether the tool should be visible to the current User */
         visible?: boolean;
-        /** Whether the tool is toggleable */
+        /** Is the tool an on-or-off toggle? */
         toggle?: boolean;
-        /** Whether the tool is active */
+        /** Is the tool the currently the active one? Not applicable to toggles or buttons. */
         active?: boolean;
-        /** Whether the tool is a button */
+        /** Is the tool a "button" in the sense of immediately resolving on click without becoming the active tool? */
         button?: boolean;
-        /** The change handler */
+        /** Does this tool allow interaction with placeables? */
+        interaction?: boolean;
+        /** Does this tool allow placeables to be controlled? */
+        control?: boolean;
+        /** Does this tool create placeables? */
+        creation?: boolean;
+        /** Default creation data */
+        createData?: object;
+        /** The data of the shape this tool creates */
+        shapeData?: object;
+        /** A callback invoked when the tool is activated or deactivated */
         onChange?: (event?: Event, active?: boolean) => void;
-        /** The toolclip configuration */
+        /** A configuration for a toolclip video */
         toolclip?: ToolclipConfigurationInput;
     }
 

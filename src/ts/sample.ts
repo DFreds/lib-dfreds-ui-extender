@@ -38,20 +38,33 @@ export function mySampleModule(): void {
             },
         });
 
-        uiExtender.registerSceneControl({
-            moduleId: MODULE_ID,
-            name: "tokens",
-            tool: {
-                name: "testingButton",
-                title: "DFreds Test Button",
-                icon: "fas fa-robot",
-                button: true,
-                order: 2,
-                onChange: (event, active) => {
-                    console.log("onChange", event, active);
-                    ui.notifications.info(`You clicked me! Active: ${active}`);
+        ["tokens", "templates", "tiles", "drawings", "walls", "lighting", "sounds", "regions", "notes"].forEach((name, index) => {
+            uiExtender.registerSceneControl({
+                moduleId: MODULE_ID,
+                name: name as "tokens" | "templates" | "tiles" | "drawings" | "walls" | "lighting" | "sounds" | "regions" | "notes",
+                tool: {
+                    name: `testingButton${index}`,
+                    title: `DFreds Test Button ${index}`,
+                    icon: "fas fa-robot",
+                    toggle: index === 0 ? true : false,
+                    button: index === 1 ? true : false,
+                    interaction: index === 2 ? true : false,
+                    control: index === 3 ? true : false,
+                    creation: name === "regions" ? true : false,
+                    shapeData: name === "regions" ? {
+                        type: "rectangle",
+                        x: 0,
+                        y: 0,
+                        width: 0,
+                        height: 0,
+                    } : undefined,
+                    order: index,
+                    onChange: (event, active) => {
+                        console.log("onChange", event, active);
+                        ui.notifications.info(`You clicked me! Active: ${active}`);
+                    },
                 },
-            },
+            });
         });
 
         uiExtender.registerHudButton({

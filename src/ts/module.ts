@@ -4,6 +4,6 @@ import { mySampleModule } from "./sample.ts";
 
 HooksUiExtender.listen();
 
-if (BUILD_MODE === "development") {
+if (BUILD_MODE === "development" || BUILD_MODE === "stage") {
     mySampleModule();
 }

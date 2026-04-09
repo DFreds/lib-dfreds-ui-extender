@@ -45,7 +45,7 @@
     <div class="form-group">
         <label>{{localize "UiExtender.RegistrationConfig.SceneControl.ToolPropertiesLabel"}}</label>
         <div class="form-fields">
-            <input type="text" value="{{#if (ne sceneControl.tool.visible undefined)}}visible{{/if}}{{#if (ne sceneControl.tool.toggle undefined)}}, toggle{{/if}}{{#if (ne sceneControl.tool.active undefined)}}, active{{/if}}{{#if (ne sceneControl.tool.button undefined)}}, button{{/if}}" disabled />
+            <input type="text" value="{{#if (eq sceneControl.tool.visible undefined)}}visible{{else if sceneControl.tool.visible}}visible{{else}}hidden{{/if}}{{#if (ne sceneControl.tool.toggle undefined)}}, toggle{{/if}}{{#if (ne sceneControl.tool.active undefined)}}, active{{/if}}{{#if (ne sceneControl.tool.button undefined)}}, button{{/if}}{{#if (ne sceneControl.tool.interaction undefined)}}, interaction{{/if}}{{#if (ne sceneControl.tool.control undefined)}}, control{{/if}}{{#if (ne sceneControl.tool.creation undefined)}}, creation{{/if}}" disabled />
         </div>
     </div>
     {{#if (ne sceneControl.tool.toolclip undefined)}}
