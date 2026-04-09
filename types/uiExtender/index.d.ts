@@ -212,12 +212,12 @@ declare global {
         id: string;
 
         /**
-         * The tooltip of the directory
+         * The tab's tooltip
          */
         tooltip?: string;
 
         /**
-         * The icon of the directory
+         * The directory's Font Awesome icon class
          */
         icon?: string;
 
@@ -234,6 +234,11 @@ declare global {
          * added to the end of the sidebar.
          */
         order?: number;
+
+        /**
+         * Whether the directory is only rendered for GM users
+         */
+        gmOnly?: boolean;
 
         /**
          * The application of the directory

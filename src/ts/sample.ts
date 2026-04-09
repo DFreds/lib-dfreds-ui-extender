@@ -32,6 +32,7 @@ export function mySampleModule(): void {
             tooltip: "Sample",
             icon: "fas fa-robot",
             order: 1,
+            gmOnly: true,
             applicationClass: SampleApplication,
             predicate: () => {
                 return true;
@@ -71,7 +72,7 @@ export function mySampleModule(): void {
             moduleId: MODULE_ID,
             hudType: "token",
             tooltip: "Show Art Button",
-            icon: `<i class="fas fa-image fa-fw"></i>`,
+            icon: `<i class="fas fa-image"></i>`,
             location: "div.left",
             predicate: (_token: any) => {
                 return true;

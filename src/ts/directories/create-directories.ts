@@ -2,11 +2,12 @@ function createTabConfig(input: {
     documentName?: string;
     tooltip?: string;
     icon?: string;
+    gmOnly?: boolean;
 }) {
     if (input.documentName) {
         return { documentName: input.documentName };
     }
-    return { tooltip: input.tooltip, icon: input.icon };
+    return { tooltip: input.tooltip, icon: input.icon, gmOnly: input.gmOnly };
 }
 
 function insertTabAtOrder({
