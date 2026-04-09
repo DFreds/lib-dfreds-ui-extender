@@ -41,7 +41,6 @@ declare global {
          */
         name:
         | "tokens"
-        | "templates"
         | "tiles"
         | "drawings"
         | "walls"
