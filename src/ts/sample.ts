@@ -42,7 +42,7 @@ export function mySampleModule(): void {
         ["tokens", "templates", "tiles", "drawings", "walls", "lighting", "sounds", "regions", "notes"].forEach((name, index) => {
             uiExtender.registerSceneControl({
                 moduleId: MODULE_ID,
-                name: name as "tokens" | "templates" | "tiles" | "drawings" | "walls" | "lighting" | "sounds" | "regions" | "notes",
+                name: name as "tokens" | "tiles" | "drawings" | "walls" | "lighting" | "sounds" | "regions" | "notes",
                 tool: {
                     name: `testingButton${index}`,
                     title: `DFreds Test Button ${index}`,
