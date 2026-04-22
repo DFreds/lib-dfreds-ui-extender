@@ -74,6 +74,9 @@ export function mySampleModule(): void {
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image"></i>`,
             location: "div.left",
+            attributes: {
+                "data-test": "test",
+            },
             predicate: (_token: any) => {
                 return true;
             },

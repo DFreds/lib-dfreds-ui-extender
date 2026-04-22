@@ -138,6 +138,11 @@ declare global {
         action?: string;
 
         /**
+         * Additional attributes to add to the button
+         */
+        attributes?: Record<string, string>;
+
+        /**
          * The HTML that will be used in the button
          */
         icon: string;

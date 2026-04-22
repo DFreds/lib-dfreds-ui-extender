@@ -9,6 +9,7 @@ function createHudButton(input: HudButtonInput): void {
                 tooltip,
                 action,
                 icon,
+                attributes,
                 location,
                 predicate,
                 onClick,
@@ -22,6 +23,7 @@ function createHudButton(input: HudButtonInput): void {
                 icon,
                 action,
                 tooltip,
+                attributes,
             });
 
             if (onClick) {
@@ -50,10 +52,12 @@ function generateButton({
     icon,
     action,
     tooltip,
+    attributes,
 }: {
     icon: string;
     action?: string;
     tooltip: string;
+    attributes?: Record<string, string>;
 }): JQuery<HTMLButtonElement> {
     const button = $(document.createElement("button"));
 
@@ -63,6 +67,12 @@ function generateButton({
 
     button.attr("data-action", action ?? tooltip.toLowerCase().slugify());
     button.attr("data-tooltip", tooltip);
+
+    if (attributes) {
+        Object.entries(attributes).forEach(([key, value]) => {
+            button.attr(key, value);
+        });
+    }
 
     return button;
 }
