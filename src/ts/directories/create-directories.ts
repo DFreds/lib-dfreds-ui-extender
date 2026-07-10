@@ -1,9 +1,4 @@
-function createTabConfig(input: {
-    documentName?: string;
-    tooltip?: string;
-    icon?: string;
-    gmOnly?: boolean;
-}) {
+function createTabConfig(input: { documentName?: string; tooltip?: string; icon?: string; gmOnly?: boolean }) {
     if (input.documentName) {
         return { documentName: input.documentName };
     }

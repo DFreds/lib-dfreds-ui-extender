@@ -5,17 +5,8 @@ function createHudButton(input: HudButtonInput): void {
         `render${type}HUD`,
         // @ts-expect-error Ignore this, it can't do dynamic hook names
         (hud: BasePlaceableHUD, html: HTMLElement, data: object) => {
-            const {
-                tooltip,
-                action,
-                icon,
-                attributes,
-                location,
-                predicate,
-                onClick,
-                onRightClick,
-                onRenderComplete,
-            } = input;
+            const { tooltip, action, icon, attributes, location, predicate, onClick, onRightClick, onRenderComplete } =
+                input;
 
             if (predicate && predicate(data) === false) return;
 

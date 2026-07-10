@@ -49,9 +49,7 @@ class UiExtenderImpl implements UiExtender {
     }
 
     #createSceneControls(): void {
-        this.#sceneControls.forEach((sceneControl) =>
-            createSceneControl(sceneControl),
-        );
+        this.#sceneControls.forEach((sceneControl) => createSceneControl(sceneControl));
     }
 
     registerHudButton(input: HudButtonInput): void {

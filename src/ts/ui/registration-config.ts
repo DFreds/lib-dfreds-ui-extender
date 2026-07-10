@@ -58,27 +58,18 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
 
     override tabGroups: Record<string, string> = {
         main: "base",
-        ...(uiExtender as UiExtenderImpl)._hudButtons.reduce(
-            (acc: Record<string, string>, hudButton) => {
-                acc[hudButton.moduleId] = "hud";
-                return acc;
-            },
-            {},
-        ),
-        ...(uiExtender as UiExtenderImpl)._sceneControls.reduce(
-            (acc: Record<string, string>, sceneControl) => {
-                acc[sceneControl.moduleId] = "sceneControls";
-                return acc;
-            },
-            {},
-        ),
-        ...(uiExtender as UiExtenderImpl)._directories.reduce(
-            (acc: Record<string, string>, directory) => {
-                acc[directory.moduleId] = "directories";
-                return acc;
-            },
-            {},
-        ),
+        ...(uiExtender as UiExtenderImpl)._hudButtons.reduce((acc: Record<string, string>, hudButton) => {
+            acc[hudButton.moduleId] = "hud";
+            return acc;
+        }, {}),
+        ...(uiExtender as UiExtenderImpl)._sceneControls.reduce((acc: Record<string, string>, sceneControl) => {
+            acc[sceneControl.moduleId] = "sceneControls";
+            return acc;
+        }, {}),
+        ...(uiExtender as UiExtenderImpl)._directories.reduce((acc: Record<string, string>, directory) => {
+            acc[directory.moduleId] = "directories";
+            return acc;
+        }, {}),
     };
 
     #prepareTabs(): Record<string, Partial<ApplicationTab>> {
@@ -105,9 +96,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                     directories: [],
                 });
             }
-            moduleRegistrations
-                .get(hudButton.moduleId)!
-                .hudButtons.push(hudButton);
+            moduleRegistrations.get(hudButton.moduleId)!.hudButtons.push(hudButton);
         }
 
         // Process sceneControls
@@ -119,9 +108,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                     directories: [],
                 });
             }
-            moduleRegistrations
-                .get(sceneControl.moduleId)!
-                .sceneControls.push(sceneControl);
+            moduleRegistrations.get(sceneControl.moduleId)!.sceneControls.push(sceneControl);
         }
 
         // Process directories
@@ -133,9 +120,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                     directories: [],
                 });
             }
-            moduleRegistrations
-                .get(directory.moduleId)!
-                .directories.push(directory);
+            moduleRegistrations.get(directory.moduleId)!.directories.push(directory);
         }
 
         const subtabData: Record<string, Partial<ApplicationTab>> = {
@@ -169,38 +154,33 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 data: {
                     registrations,
                 },
-                subtabs: ["hud", "sceneControls", "directories"].reduce(
-                    (subtabs: any, subtabId) => {
-                        const group = moduleId;
-                        const active = this.tabGroups[group] === subtabId;
-                        const cssClass = active ? "active" : "";
-                        subtabs[subtabId] = {
-                            ...subtabData[subtabId],
-                            group,
-                            active,
-                            cssClass,
-                            data: {
-                                items:
-                                    subtabId === "hud"
-                                        ? registrations.hudButtons
-                                        : subtabId === "sceneControls"
-                                          ? registrations.sceneControls
-                                          : registrations.directories,
-                            },
-                        };
-                        return subtabs;
-                    },
-                    {},
-                ),
+                subtabs: ["hud", "sceneControls", "directories"].reduce((subtabs: any, subtabId) => {
+                    const group = moduleId;
+                    const active = this.tabGroups[group] === subtabId;
+                    const cssClass = active ? "active" : "";
+                    subtabs[subtabId] = {
+                        ...subtabData[subtabId],
+                        group,
+                        active,
+                        cssClass,
+                        data: {
+                            items:
+                                subtabId === "hud"
+                                    ? registrations.hudButtons
+                                    : subtabId === "sceneControls"
+                                      ? registrations.sceneControls
+                                      : registrations.directories,
+                        },
+                    };
+                    return subtabs;
+                }, {}),
             };
         }
 
         return tabs;
     }
 
-    protected override async _prepareContext(
-        options: ApplicationRenderOptions,
-    ): Promise<object> {
+    protected override async _prepareContext(options: ApplicationRenderOptions): Promise<object> {
         const context = await super._prepareContext(options);
 
         return Object.assign(context, {

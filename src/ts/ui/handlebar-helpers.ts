@@ -12,12 +12,7 @@ class HandlebarHelpers {
     #registerCompare() {
         Handlebars.registerHelper(
             "compare",
-            (
-                leftValue: unknown,
-                operator: string,
-                rightValue: unknown,
-                options: any,
-            ) => {
+            (leftValue: unknown, operator: string, rightValue: unknown, options: any) => {
                 if (options === undefined) {
                     options = rightValue;
                     rightValue = operator;
@@ -60,10 +55,7 @@ class HandlebarHelpers {
                 };
 
                 if (!operators[operator]) {
-                    throw new Error(
-                        "Handlebars Helper 'compare' doesn't know the operator " +
-                            operator,
-                    );
+                    throw new Error("Handlebars Helper 'compare' doesn't know the operator " + operator);
                 }
 
                 const result = operators[operator](leftValue, rightValue);
@@ -91,31 +83,25 @@ class HandlebarHelpers {
     }
 
     #registerDirectoryName() {
-        Handlebars.registerHelper(
-            "libUiExtenderDirectoryName",
-            (directory: DirectoryInput) => {
-                if (directory.documentName) {
-                    // @ts-expect-error Does not like this
-                    return CONFIG[directory.documentName]?.documentClass;
-                } else {
-                    return directory.tooltip;
-                }
-            },
-        );
+        Handlebars.registerHelper("libUiExtenderDirectoryName", (directory: DirectoryInput) => {
+            if (directory.documentName) {
+                // @ts-expect-error Does not like this
+                return CONFIG[directory.documentName]?.documentClass;
+            } else {
+                return directory.tooltip;
+            }
+        });
     }
 
     #registerDirectoryIcon() {
-        Handlebars.registerHelper(
-            "libUiExtenderDirectoryIcon",
-            (directory: DirectoryInput) => {
-                if (directory.documentName) {
-                    // @ts-expect-error Does not like this
-                    return CONFIG[directory.documentName]?.sidebarIcon;
-                } else {
-                    return directory.icon;
-                }
-            },
-        );
+        Handlebars.registerHelper("libUiExtenderDirectoryIcon", (directory: DirectoryInput) => {
+            if (directory.documentName) {
+                // @ts-expect-error Does not like this
+                return CONFIG[directory.documentName]?.sidebarIcon;
+            } else {
+                return directory.icon;
+            }
+        });
     }
 }
 

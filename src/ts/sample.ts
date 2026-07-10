@@ -39,34 +39,47 @@ export function mySampleModule(): void {
             },
         });
 
-        ["tokens", "templates", "tiles", "drawings", "walls", "lighting", "sounds", "regions", "notes"].forEach((name, index) => {
-            uiExtender.registerSceneControl({
-                moduleId: MODULE_ID,
-                name: name as "tokens" | "tiles" | "drawings" | "walls" | "lighting" | "sounds" | "regions" | "notes",
-                tool: {
-                    name: `testingButton${index}`,
-                    title: `DFreds Test Button ${index}`,
-                    icon: "fas fa-robot",
-                    toggle: index === 0 ? true : false,
-                    button: index === 1 ? true : false,
-                    interaction: index === 2 ? true : false,
-                    control: index === 3 ? true : false,
-                    creation: name === "regions" ? true : false,
-                    shapeData: name === "regions" ? {
-                        type: "rectangle",
-                        x: 0,
-                        y: 0,
-                        width: 0,
-                        height: 0,
-                    } : undefined,
-                    order: index,
-                    onChange: (event, active) => {
-                        console.log("onChange", event, active);
-                        ui.notifications.info(`You clicked me! Active: ${active}`);
+        ["tokens", "templates", "tiles", "drawings", "walls", "lighting", "sounds", "regions", "notes"].forEach(
+            (name, index) => {
+                uiExtender.registerSceneControl({
+                    moduleId: MODULE_ID,
+                    name: name as
+                        | "tokens"
+                        | "tiles"
+                        | "drawings"
+                        | "walls"
+                        | "lighting"
+                        | "sounds"
+                        | "regions"
+                        | "notes",
+                    tool: {
+                        name: `testingButton${index}`,
+                        title: `DFreds Test Button ${index}`,
+                        icon: "fas fa-robot",
+                        toggle: index === 0 ? true : false,
+                        button: index === 1 ? true : false,
+                        interaction: index === 2 ? true : false,
+                        control: index === 3 ? true : false,
+                        creation: name === "regions" ? true : false,
+                        shapeData:
+                            name === "regions"
+                                ? {
+                                      type: "rectangle",
+                                      x: 0,
+                                      y: 0,
+                                      width: 0,
+                                      height: 0,
+                                  }
+                                : undefined,
+                        order: index,
+                        onChange: (event, active) => {
+                            console.log("onChange", event, active);
+                            ui.notifications.info(`You clicked me! Active: ${active}`);
+                        },
                     },
-                },
-            });
-        });
+                });
+            },
+        );
 
         uiExtender.registerHudButton({
             moduleId: MODULE_ID,
@@ -80,20 +93,10 @@ export function mySampleModule(): void {
             predicate: (_token: any) => {
                 return true;
             },
-            onClick: (
-                _event: JQuery.ClickEvent,
-                _button: JQuery,
-                _token: any,
-                _hud: BasePlaceableHUD,
-            ) => {
+            onClick: (_event: JQuery.ClickEvent, _button: JQuery, _token: any, _hud: BasePlaceableHUD) => {
                 console.log("clicked");
             },
-            onRightClick: (
-                _event: JQuery.ContextMenuEvent,
-                _button: JQuery,
-                _token: any,
-                _hud: BasePlaceableHUD,
-            ) => {
+            onRightClick: (_event: JQuery.ContextMenuEvent, _button: JQuery, _token: any, _hud: BasePlaceableHUD) => {
                 console.log("right clicked");
             },
         });
@@ -104,20 +107,10 @@ export function mySampleModule(): void {
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image fa-fw"></i>`,
             location: "div.left",
-            onClick: (
-                _event: JQuery.ClickEvent,
-                _button: JQuery,
-                tile: any,
-                _hud: BasePlaceableHUD,
-            ) => {
+            onClick: (_event: JQuery.ClickEvent, _button: JQuery, tile: any, _hud: BasePlaceableHUD) => {
                 console.log("clicked", tile);
             },
-            onRightClick: (
-                _event: JQuery.ContextMenuEvent,
-                _button: JQuery,
-                tile: any,
-                _hud: BasePlaceableHUD,
-            ) => {
+            onRightClick: (_event: JQuery.ContextMenuEvent, _button: JQuery, tile: any, _hud: BasePlaceableHUD) => {
                 console.log("right clicked", tile);
             },
         });
@@ -128,15 +121,8 @@ export function mySampleModule(): void {
             tooltip: "Say Hi",
             icon: `<i class="fas fa-robot fa-fw"></i>`,
             location: "div.right",
-            onClick: (
-                _event: JQuery.ClickEvent,
-                _button: JQuery,
-                drawing: any,
-                _hud: BasePlaceableHUD,
-            ) => {
-                ui.notifications.info(
-                    `Hello from drawing ${drawing.fillColor}`,
-                );
+            onClick: (_event: JQuery.ClickEvent, _button: JQuery, drawing: any, _hud: BasePlaceableHUD) => {
+                ui.notifications.info(`Hello from drawing ${drawing.fillColor}`);
             },
         });
     });

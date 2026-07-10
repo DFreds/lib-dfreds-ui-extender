@@ -10,9 +10,7 @@ const RenderSidebar: Listener = {
 
             directories.forEach((directory) => {
                 if (directory.predicate && !directory.predicate()) {
-                    const button = $(
-                        `nav menu button[data-tab="${directory.id}"]`,
-                    ).closest("li");
+                    const button = $(`nav menu button[data-tab="${directory.id}"]`).closest("li");
 
                     if (button) {
                         button.remove();

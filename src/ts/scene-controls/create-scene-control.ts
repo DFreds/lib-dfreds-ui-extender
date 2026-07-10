@@ -13,10 +13,7 @@ function createSceneControl(input: SceneControlInput): void {
                 throw new Error(`Cannot find target control ${name}`);
             }
 
-            const targetControlTools = targetControl.tools as unknown as Record<
-                string,
-                SceneControlToolInput
-            >;
+            const targetControlTools = targetControl.tools as unknown as Record<string, SceneControlToolInput>;
 
             if (tool.order === undefined) {
                 tool.order = Object.keys(targetControl.tools).length + 1; // Foundry starts at 1
