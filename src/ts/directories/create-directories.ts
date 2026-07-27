@@ -34,11 +34,60 @@ function insertTabAtOrder({
     return newTabs;
 }
 
-function createDirectory(input: DirectoryInput): void {
-    const { id, order, applicationClass } = input;
-    const tabConfig = createTabConfig(input);
+function insertTabAdjacentTo({
+    tabs,
+    newTabId,
+    config,
+    targetId,
+    placement,
+}: {
+    tabs: Record<string, any>;
+    newTabId: string;
+    config: any;
+    targetId: string;
+    placement: "before" | "after";
+}) {
+    const newTabs: Record<string, any> = {};
 
-    if (order !== undefined) {
+    Object.entries(tabs).forEach(([key, value]) => {
+        if (key === newTabId) return;
+
+        if (key === targetId && placement === "before") {
+            newTabs[newTabId] = config;
+        }
+
+        newTabs[key] = value;
+
+        if (key === targetId && placement === "after") {
+            newTabs[newTabId] = config;
+        }
+    });
+
+    return newTabs;
+}
+
+function createDirectory(input: DirectoryInput): void {
+    const { id, before, after, order, applicationClass } = input;
+    const tabConfig = createTabConfig(input);
+    const tabs = CONFIG.ui.sidebar.TABS as unknown as Record<string, any>;
+
+    if (before !== undefined && before in tabs) {
+        CONFIG.ui.sidebar.TABS = insertTabAdjacentTo({
+            tabs,
+            newTabId: id,
+            config: tabConfig,
+            targetId: before,
+            placement: "before",
+        });
+    } else if (after !== undefined && after in tabs) {
+        CONFIG.ui.sidebar.TABS = insertTabAdjacentTo({
+            tabs,
+            newTabId: id,
+            config: tabConfig,
+            targetId: after,
+            placement: "after",
+        });
+    } else if (order !== undefined) {
         CONFIG.ui.sidebar.TABS = insertTabAtOrder({
             tabs: CONFIG.ui.sidebar.TABS,
             newTabId: id,

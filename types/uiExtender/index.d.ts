@@ -210,8 +210,25 @@ declare global {
         documentName?: string;
 
         /**
-         * The order of the directory. If not provided, the directory will be
-         * added to the end of the sidebar.
+         * The ID of the directory to insert this one before. Takes precedence
+         * over both `after` and `order`. If no directory with this ID exists,
+         * falls back to `after`, then `order`, then the end of the sidebar.
+         */
+        before?: string;
+
+        /**
+         * The ID of the directory to insert this one after. Takes precedence
+         * over `order`. If no directory with this ID exists, falls back to
+         * `order`, then the end of the sidebar.
+         */
+        after?: string;
+
+        /**
+         * The positional index of the directory, evaluated after any other
+         * modules' directories have been inserted. Prefer `before` or `after`
+         * when the position depends on another directory, since the index of
+         * that directory shifts as other modules register. If not provided, the
+         * directory will be added to the end of the sidebar.
          */
         order?: number;
 
