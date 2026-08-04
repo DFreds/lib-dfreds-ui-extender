@@ -95,7 +95,6 @@ function createDirectory(input: DirectoryInput): void {
             order,
         });
     } else {
-        // @ts-expect-error Type mismatch with Foundry's types
         CONFIG.ui.sidebar.TABS[id] = tabConfig;
     }
 
