@@ -60,7 +60,8 @@ export default class DialogV2<
     }: {
         yes?: Partial<DialogV2Button>;
         no?: Partial<DialogV2Button>;
-    } & DeepPartial<DialogV2Configuration & DialogV2WaitOptions>): Promise<boolean>;
+    } & DeepPartial<DialogV2Configuration> &
+        Partial<DialogV2WaitOptions>): Promise<boolean | null>;
 
     /**
      * A utility helper to generate a dialog with a single confirmation button.
@@ -71,30 +72,39 @@ export default class DialogV2<
      */
     static prompt({
         ok,
-        ...options
-    }: { ok: Partial<DialogV2Button> } & DeepPartial<DialogV2Configuration & DialogV2WaitOptions>): Promise<unknown>;
+        ...config
+    }: { ok?: Partial<DialogV2Button> } & DeepPartial<DialogV2Configuration> &
+        Partial<DialogV2WaitOptions>): Promise<unknown>;
+
+    /**
+     * A utility helper to generate a dialog for user input.
+     * @param [ok]   Options to overwrite the default confirmation button configuration.
+     * @returns     Resolves to the data of the form if the ok button was pressed,
+     *              or the value returned by that button's callback. If additional
+     *              buttons were provided, the Promise resolves to the identifier of
+     *              the one that was pressed, or the value returned by its callback.
+     *              If the dialog was dismissed, and rejectClose is false, the Promise
+     *              resolves to null.
+     */
+    static input<T>({
+        ok,
+        ...config
+    }: { ok?: Partial<DialogV2Button<T>> } & DeepPartial<DialogV2Configuration> &
+        Partial<DialogV2WaitOptions>): Promise<T | null>;
 
     /**
      * Spawn a dialog and wait for it to be dismissed or submitted.
-     * @param [render]            A function to invoke whenever the dialog is rendered.
-     * @param [close]             A function to invoke when the dialog is closed under any
-     *                            circumstances.
-     * @param [rejectClose=true] Throw a Promise rejection if the dialog is dismissed.
-     * @returns                  Resolves to the identifier of the
-     *                           button used to submit the dialog, or the value returned by that button's
-     *                           callback. If the dialog was dismissed, and rejectClose is false, the
-     *                           Promise resolves to null.
+     * @returns Resolves to the identifier of the button used to submit the dialog, or the value returned by that
+     *          button's callback. If the dialog was dismissed, and rejectClose is false, the Promise resolves to
+     *          null.
      */
     static wait({
         rejectClose,
         close,
         render,
+        renderOptions,
         ...options
-    }: {
-        rejectClose?: boolean;
-        close?: DialogV2CloseCallback;
-        render?: DialogV2RenderCallback;
-    } & DeepPartial<DialogV2Configuration>): Promise<unknown>;
+    }: DeepPartial<DialogV2Configuration> & Partial<DialogV2WaitOptions>): Promise<unknown>;
 
     /**
      * Present an asynchronous Dialog query to a specific User for response.
@@ -118,7 +128,7 @@ export default class DialogV2<
     static _handleQuery: (options: { type: "prompt" | "confirm" | "input" | "wait"; config: object }) => unknown;
 }
 
-export interface DialogV2Button {
+export interface DialogV2Button<T = unknown> {
     /** The button action identifier. */
     action: string;
 
@@ -137,20 +147,20 @@ export interface DialogV2Button {
     /** The button type. */
     type?: string;
 
-    /** Whether the button is disabled */
+    /** Whether the button is disabled. */
     disabled?: boolean;
 
-    /**
-     * Whether this button represents the default action to take if the user submits the form without pressing a button,
-     * i.e. with an Enter keypress.
-     */
+    /** The tooltip of the button. */
+    tooltip?: string;
+
+    /** Whether this button is autofocused */
     default?: boolean;
 
     /**
      * A function to invoke when the button is clicked. The value returned from this function will be used as the
      * dialog's submitted value. Otherwise, the button's identifier is used.
      */
-    callback?: DialogV2ButtonCallback;
+    callback?: DialogV2ButtonCallback<T>;
 }
 
 export interface DialogV2Configuration extends ApplicationConfiguration {
@@ -189,32 +199,32 @@ export interface DialogV2WaitOptions {
 }
 
 /**
- * A button click handler method.
- * @param event The button click event, or a form submission event if the dialog was
- * @param button If the form was submitted via keyboard, this will be the default
- * @param dialog The dialog element.
+ * @param event The button click event, or a form submission event if the dialog was submitted via keyboard.
+ * @param button If the form was submitted via keyboard, this will be the default button, otherwise the button that
+ *               was clicked.
+ * @param dialog The DialogV2 instance.
  */
-export type DialogV2ButtonCallback = (
+export type DialogV2ButtonCallback<T = unknown> = (
     event: PointerEvent | SubmitEvent,
     button: HTMLButtonElement,
     dialog: DialogV2,
-) => Promise<unknown> | unknown;
+) => Promise<T> | T;
 
 /**
- * A dialog render handler method.
  * @param event The render event.
- * @param dialog The dialog element.
+ * @param dialog The DialogV2 instance.
  */
-export type DialogV2RenderCallback = (event: Event, dialog: HTMLDialogElement) => void;
+export type DialogV2RenderCallback = (event: Event, dialog: DialogV2) => void;
 
 /**
- * @param event The close event
- * @param dialog The dialog instance
+ * @param event The close event.
+ * @param dialog The DialogV2 instance.
  */
 export type DialogV2CloseCallback = (event: Event, dialog: DialogV2) => void;
 
 /**
- * @param result Either the identifier of the button that was clicked to submit
- * the dialog, or the result returned by that button's callback
+ * @param result Either the identifier of the button that was clicked to submit the dialog, or the result returned by
+ *               that button's callback.
+ * @param dialog The DialogV2 instance.
  */
-export type DialogV2SubmitCallback = (result: unknown) => Promise<void>;
+export type DialogV2SubmitCallback = (result: unknown, dialog: DialogV2) => Promise<void>;
