@@ -86,9 +86,10 @@ class HandlebarHelpers {
         Handlebars.registerHelper("libUiExtenderDirectoryName", (directory: DirectoryInput) => {
             if (directory.documentName) {
                 // @ts-expect-error Does not like this
-                return CONFIG[directory.documentName]?.documentClass;
+                const label = CONFIG[directory.documentName]?.documentClass?.metadata?.labelPlural;
+                return game.i18n.localize(label ?? directory.documentName);
             } else {
-                return directory.tooltip;
+                return game.i18n.localize(directory.tooltip ?? "");
             }
         });
     }
