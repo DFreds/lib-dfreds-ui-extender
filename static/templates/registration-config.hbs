@@ -44,6 +44,20 @@
                     {{/if}}
                 </div>
             {{/with}}
+
+            {{#with tab.subtabs.settingsButtons as |subtab|}}
+                <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
+                    {{#if subtab.data.items}}
+                        {{#each subtab.data.items as |settingsButton|}}
+                            {{> (lookup @root "settingsButtonPartial") settingsButton=settingsButton}}
+                        {{/each}}
+                    {{else}}
+                        <p class="no-items">
+                            {{localize "UiExtender.RegistrationConfig.SettingsButton.NoSettingsButtons" moduleId=tab.id}}
+                        </p>
+                    {{/if}}
+                </div>
+            {{/with}}
         </section>
     {{/each}}
 </div>

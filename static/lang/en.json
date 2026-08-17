@@ -5,6 +5,7 @@
             "Hud": "HUD",
             "SceneControls": "Scene Controls",
             "Directories": "Directories",
+            "SettingsButtons": "Settings Buttons",
             "HudButton": {
                 "ModuleIdLabel": "Module ID",
                 "HudTypeLabel": "HUD Type",
@@ -37,7 +38,18 @@
                 "OrderLabel": "Order",
                 "ApplicationClassLabel": "Application Class",
                 "NoDirectories": "No directories registered for {moduleId}"
+            },
+            "SettingsButton": {
+                "ModuleIdLabel": "Module ID",
+                "NameLabel": "Button Name",
+                "IconLabel": "Icon",
+                "GmOnlyLabel": "GM Only",
+                "ApplicationClassLabel": "Application Class",
+                "NoSettingsButtons": "No settings buttons registered for {moduleId}"
             }
+        },
+        "ModuleSettings": {
+            "Header": "Module Settings"
         },
         "Settings": {
             "RegistrationConfig": {

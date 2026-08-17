@@ -5,15 +5,27 @@ import { UiExtenderImpl } from "../ui-extender.ts";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
+interface ModuleRegistrations {
+    hudButtons: any[];
+    sceneControls: any[];
+    directories: any[];
+    settingsButtons: any[];
+}
+
 interface ModuleTab extends Partial<ApplicationTab> {
     data: {
-        registrations: {
-            hudButtons: any[];
-            sceneControls: any[];
-            directories: any[];
-        };
+        registrations: ModuleRegistrations;
     };
     subtabs: Record<string, ApplicationTab>;
+}
+
+function emptyRegistrations(): ModuleRegistrations {
+    return {
+        hudButtons: [],
+        sceneControls: [],
+        directories: [],
+        settingsButtons: [],
+    };
 }
 
 /** Similar to prototype-overrides - could be similar to SettingsConfig */
@@ -40,6 +52,8 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
 
     static _directoryPartial = `modules/${MODULE_ID}/templates/partials/directory.hbs`;
 
+    static _settingsButtonPartial = `modules/${MODULE_ID}/templates/partials/settings-button.hbs`;
+
     static override PARTS: Record<string, HandlebarsTemplatePart> = {
         tabs: {
             template: "templates/generic/tab-navigation.hbs",
@@ -51,6 +65,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 RegistrationConfig._hudButtonPartial,
                 RegistrationConfig._sceneControlPartial,
                 RegistrationConfig._directoryPartial,
+                RegistrationConfig._settingsButtonPartial,
             ],
             scrollable: [".tab-content"],
         },
@@ -70,57 +85,42 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
             acc[directory.moduleId] = "directories";
             return acc;
         }, {}),
+        ...(uiExtender as UiExtenderImpl)._settingsButtons.reduce((acc: Record<string, string>, settingsButton) => {
+            acc[settingsButton.moduleId] = "settingsButtons";
+            return acc;
+        }, {}),
     };
 
     #prepareTabs(): Record<string, Partial<ApplicationTab>> {
         const hudButtons = (uiExtender as UiExtenderImpl)._hudButtons;
         const sceneControls = (uiExtender as UiExtenderImpl)._sceneControls;
         const directories = (uiExtender as UiExtenderImpl)._directories;
+        const settingsButtons = (uiExtender as UiExtenderImpl)._settingsButtons;
 
         // Create a map of module IDs to their registrations
-        const moduleRegistrations = new Map<
-            string,
-            {
-                hudButtons: any[];
-                sceneControls: any[];
-                directories: any[];
-            }
-        >();
+        const moduleRegistrations = new Map<string, ModuleRegistrations>();
 
-        // Process hudButtons
+        const registrationsFor = (moduleId: string): ModuleRegistrations => {
+            if (!moduleRegistrations.has(moduleId)) {
+                moduleRegistrations.set(moduleId, emptyRegistrations());
+            }
+            return moduleRegistrations.get(moduleId)!;
+        };
+
         for (const hudButton of hudButtons) {
-            if (!moduleRegistrations.has(hudButton.moduleId)) {
-                moduleRegistrations.set(hudButton.moduleId, {
-                    hudButtons: [],
-                    sceneControls: [],
-                    directories: [],
-                });
-            }
-            moduleRegistrations.get(hudButton.moduleId)!.hudButtons.push(hudButton);
+            registrationsFor(hudButton.moduleId).hudButtons.push(hudButton);
         }
 
-        // Process sceneControls
         for (const sceneControl of sceneControls) {
-            if (!moduleRegistrations.has(sceneControl.moduleId)) {
-                moduleRegistrations.set(sceneControl.moduleId, {
-                    hudButtons: [],
-                    sceneControls: [],
-                    directories: [],
-                });
-            }
-            moduleRegistrations.get(sceneControl.moduleId)!.sceneControls.push(sceneControl);
+            registrationsFor(sceneControl.moduleId).sceneControls.push(sceneControl);
         }
 
-        // Process directories
         for (const directory of directories) {
-            if (!moduleRegistrations.has(directory.moduleId)) {
-                moduleRegistrations.set(directory.moduleId, {
-                    hudButtons: [],
-                    sceneControls: [],
-                    directories: [],
-                });
-            }
-            moduleRegistrations.get(directory.moduleId)!.directories.push(directory);
+            registrationsFor(directory.moduleId).directories.push(directory);
+        }
+
+        for (const settingsButton of settingsButtons) {
+            registrationsFor(settingsButton.moduleId).settingsButtons.push(settingsButton);
         }
 
         const subtabData: Record<string, Partial<ApplicationTab>> = {
@@ -139,6 +139,11 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 label: "UiExtender.RegistrationConfig.Directories",
                 icon: "fa-solid fa-folder-open",
             },
+            settingsButtons: {
+                id: "settingsButtons",
+                label: "UiExtender.RegistrationConfig.SettingsButtons",
+                icon: "fa-solid fa-sliders",
+            },
         };
 
         // Create tabs for each module that has registrations
@@ -154,7 +159,14 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                 data: {
                     registrations,
                 },
-                subtabs: ["hud", "sceneControls", "directories"].reduce((subtabs: any, subtabId) => {
+                subtabs: (
+                    [
+                        ["hud", registrations.hudButtons],
+                        ["sceneControls", registrations.sceneControls],
+                        ["directories", registrations.directories],
+                        ["settingsButtons", registrations.settingsButtons],
+                    ] as [string, any[]][]
+                ).reduce((subtabs: any, [subtabId, items]) => {
                     const group = moduleId;
                     const active = this.tabGroups[group] === subtabId;
                     const cssClass = active ? "active" : "";
@@ -163,14 +175,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
                         group,
                         active,
                         cssClass,
-                        data: {
-                            items:
-                                subtabId === "hud"
-                                    ? registrations.hudButtons
-                                    : subtabId === "sceneControls"
-                                      ? registrations.sceneControls
-                                      : registrations.directories,
-                        },
+                        data: { items },
                     };
                     return subtabs;
                 }, {}),
@@ -189,6 +194,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
             hudButtonPartial: RegistrationConfig._hudButtonPartial,
             sceneControlPartial: RegistrationConfig._sceneControlPartial,
             directoryPartial: RegistrationConfig._directoryPartial,
+            settingsButtonPartial: RegistrationConfig._settingsButtonPartial,
         });
     }
 }

@@ -4,7 +4,21 @@ import { ApplicationConfiguration } from "@client/applications/_module.mjs";
 import { BasePlaceableHUD } from "@client/applications/hud/_module.mjs";
 
 const { AbstractSidebarTab } = foundry.applications.sidebar;
-const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+class SampleSettingsApplication extends HandlebarsApplicationMixin(ApplicationV2) {
+    static override DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
+        window: {
+            title: "Sample Settings",
+        },
+    };
+
+    static override PARTS: Record<string, HandlebarsTemplatePart> = {
+        sample: {
+            template: `modules/${MODULE_ID}/templates/sample.hbs`,
+        },
+    };
+}
 
 class SampleApplication extends HandlebarsApplicationMixin(AbstractSidebarTab) {
     static override DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
@@ -44,14 +58,7 @@ export function mySampleModule(): void {
                 uiExtender.registerSceneControl({
                     moduleId: MODULE_ID,
                     name: name as
-                        | "tokens"
-                        | "tiles"
-                        | "drawings"
-                        | "walls"
-                        | "lighting"
-                        | "sounds"
-                        | "regions"
-                        | "notes",
+                        "tokens" | "tiles" | "drawings" | "walls" | "lighting" | "sounds" | "regions" | "notes",
                     tool: {
                         name: `testingButton${index}`,
                         title: `DFreds Test Button ${index}`,
@@ -124,6 +131,21 @@ export function mySampleModule(): void {
             onClick: (_event: JQuery.ClickEvent, _button: JQuery, drawing: any, _hud: BasePlaceableHUD) => {
                 ui.notifications.info(`Hello from drawing ${drawing.fillColor}`);
             },
+        });
+
+        uiExtender.registerSettingsButton({
+            moduleId: MODULE_ID,
+            name: "Sample Settings Two",
+            icon: "fa-solid fa-robot",
+            applicationClass: SampleSettingsApplication,
+        });
+
+        uiExtender.registerSettingsButton({
+            moduleId: MODULE_ID,
+            name: "Sample Settings One",
+            icon: "fa-solid fa-flask",
+            gmOnly: true,
+            applicationClass: SampleSettingsApplication,
         });
     });
 }
