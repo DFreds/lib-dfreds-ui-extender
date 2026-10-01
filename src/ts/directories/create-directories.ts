@@ -5,65 +5,24 @@ function createTabConfig(input: { documentName?: string; tooltip?: string; icon?
     return { tooltip: input.tooltip, icon: input.icon, gmOnly: input.gmOnly };
 }
 
-function insertTabAtOrder({
-    tabs,
-    newTabId,
-    config,
-    order,
-}: {
-    tabs: Record<string, any>;
-    newTabId: string;
-    config: any;
-    order: number;
-}) {
-    const newTabs: Record<string, any> = {};
-    let inserted = false;
-
-    Object.entries(tabs).forEach(([key, value], index) => {
-        if (index === order && !inserted) {
-            newTabs[newTabId] = config;
-            inserted = true;
-        }
-        newTabs[key] = value;
-    });
-
-    if (!inserted) {
-        newTabs[newTabId] = config;
-    }
-
-    return newTabs;
+function insertTab(entries: [string, any][], id: string, config: any, index: number) {
+    const isValidIndex = Number.isInteger(index) && index >= 0;
+    const at = isValidIndex ? index : entries.length;
+    return Object.fromEntries(entries.toSpliced(at, 0, [id, config]));
 }
 
-function insertTabAdjacentTo({
-    tabs,
-    newTabId,
-    config,
-    targetId,
-    placement,
-}: {
-    tabs: Record<string, any>;
-    newTabId: string;
-    config: any;
-    targetId: string;
-    placement: "before" | "after";
-}) {
-    const newTabs: Record<string, any> = {};
+function insertTabNextTo(
+    tabs: Record<string, any>,
+    id: string,
+    config: any,
+    targetId: string,
+    placement: "before" | "after",
+) {
+    const entries = Object.entries(tabs).filter(([key]) => key !== id);
+    if (targetId === id) return Object.fromEntries(entries);
 
-    Object.entries(tabs).forEach(([key, value]) => {
-        if (key === newTabId) return;
-
-        if (key === targetId && placement === "before") {
-            newTabs[newTabId] = config;
-        }
-
-        newTabs[key] = value;
-
-        if (key === targetId && placement === "after") {
-            newTabs[newTabId] = config;
-        }
-    });
-
-    return newTabs;
+    const targetIndex = entries.findIndex(([key]) => key === targetId);
+    return insertTab(entries, id, config, placement === "before" ? targetIndex : targetIndex + 1);
 }
 
 function createDirectory(input: DirectoryInput): void {
@@ -72,28 +31,11 @@ function createDirectory(input: DirectoryInput): void {
     const tabs = CONFIG.ui.sidebar.TABS as unknown as Record<string, any>;
 
     if (before !== undefined && before in tabs) {
-        CONFIG.ui.sidebar.TABS = insertTabAdjacentTo({
-            tabs,
-            newTabId: id,
-            config: tabConfig,
-            targetId: before,
-            placement: "before",
-        });
+        CONFIG.ui.sidebar.TABS = insertTabNextTo(tabs, id, tabConfig, before, "before");
     } else if (after !== undefined && after in tabs) {
-        CONFIG.ui.sidebar.TABS = insertTabAdjacentTo({
-            tabs,
-            newTabId: id,
-            config: tabConfig,
-            targetId: after,
-            placement: "after",
-        });
+        CONFIG.ui.sidebar.TABS = insertTabNextTo(tabs, id, tabConfig, after, "after");
     } else if (order !== undefined) {
-        CONFIG.ui.sidebar.TABS = insertTabAtOrder({
-            tabs: CONFIG.ui.sidebar.TABS,
-            newTabId: id,
-            config: tabConfig,
-            order,
-        });
+        CONFIG.ui.sidebar.TABS = insertTab(Object.entries(tabs), id, tabConfig, order);
     } else {
         CONFIG.ui.sidebar.TABS[id] = tabConfig;
     }
