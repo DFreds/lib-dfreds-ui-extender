@@ -5,27 +5,40 @@ import { UiExtenderImpl } from "../ui-extender.ts";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-interface ModuleRegistrations {
-    hudButtons: any[];
-    sceneControls: any[];
-    directories: any[];
-    settingsButtons: any[];
+interface Registration {
+    moduleId: string;
 }
 
 interface ModuleTab extends Partial<ApplicationTab> {
-    data: {
-        registrations: ModuleRegistrations;
-    };
-    subtabs: Record<string, ApplicationTab>;
+    subtabs: Record<string, Partial<ApplicationTab> & { data: { items: Registration[] } }>;
 }
 
-function emptyRegistrations(): ModuleRegistrations {
+const SUBTABS = [
+    { id: "hud", label: "UiExtender.RegistrationConfig.Hud", icon: "fa-solid fa-grid-2" },
+    { id: "sceneControls", label: "UiExtender.RegistrationConfig.SceneControls", icon: "fa-solid fa-dial-med" },
+    { id: "directories", label: "UiExtender.RegistrationConfig.Directories", icon: "fa-solid fa-folder-open" },
+    { id: "settingsButtons", label: "UiExtender.RegistrationConfig.SettingsButtons", icon: "fa-solid fa-sliders" },
+];
+
+function registrationsBySubtab(): Record<string, Registration[]> {
+    const extender = uiExtender as UiExtenderImpl;
     return {
-        hudButtons: [],
-        sceneControls: [],
-        directories: [],
-        settingsButtons: [],
+        hud: extender._hudButtons,
+        sceneControls: extender._sceneControls,
+        directories: extender._directories,
+        settingsButtons: extender._settingsButtons,
     };
+}
+
+function initialSubtabs(): Record<string, string> {
+    const registrations = registrationsBySubtab();
+    const initial: Record<string, string> = {};
+    for (const subtab of SUBTABS) {
+        for (const registration of registrations[subtab.id]) {
+            initial[registration.moduleId] = subtab.id;
+        }
+    }
+    return initial;
 }
 
 /** Similar to prototype-overrides - could be similar to SettingsConfig */
@@ -73,116 +86,48 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
 
     override tabGroups: Record<string, string> = {
         main: "base",
-        ...(uiExtender as UiExtenderImpl)._hudButtons.reduce((acc: Record<string, string>, hudButton) => {
-            acc[hudButton.moduleId] = "hud";
-            return acc;
-        }, {}),
-        ...(uiExtender as UiExtenderImpl)._sceneControls.reduce((acc: Record<string, string>, sceneControl) => {
-            acc[sceneControl.moduleId] = "sceneControls";
-            return acc;
-        }, {}),
-        ...(uiExtender as UiExtenderImpl)._directories.reduce((acc: Record<string, string>, directory) => {
-            acc[directory.moduleId] = "directories";
-            return acc;
-        }, {}),
-        ...(uiExtender as UiExtenderImpl)._settingsButtons.reduce((acc: Record<string, string>, settingsButton) => {
-            acc[settingsButton.moduleId] = "settingsButtons";
-            return acc;
-        }, {}),
+        ...initialSubtabs(),
     };
 
-    #prepareTabs(): Record<string, Partial<ApplicationTab>> {
-        const hudButtons = (uiExtender as UiExtenderImpl)._hudButtons;
-        const sceneControls = (uiExtender as UiExtenderImpl)._sceneControls;
-        const directories = (uiExtender as UiExtenderImpl)._directories;
-        const settingsButtons = (uiExtender as UiExtenderImpl)._settingsButtons;
+    #prepareTabs(): Record<string, ModuleTab> {
+        const registrations = registrationsBySubtab();
+        const moduleIds = new Set(
+            Object.values(registrations)
+                .flat()
+                .map((registration) => registration.moduleId),
+        );
 
-        // Create a map of module IDs to their registrations
-        const moduleRegistrations = new Map<string, ModuleRegistrations>();
-
-        const registrationsFor = (moduleId: string): ModuleRegistrations => {
-            if (!moduleRegistrations.has(moduleId)) {
-                moduleRegistrations.set(moduleId, emptyRegistrations());
-            }
-            return moduleRegistrations.get(moduleId)!;
-        };
-
-        for (const hudButton of hudButtons) {
-            registrationsFor(hudButton.moduleId).hudButtons.push(hudButton);
-        }
-
-        for (const sceneControl of sceneControls) {
-            registrationsFor(sceneControl.moduleId).sceneControls.push(sceneControl);
-        }
-
-        for (const directory of directories) {
-            registrationsFor(directory.moduleId).directories.push(directory);
-        }
-
-        for (const settingsButton of settingsButtons) {
-            registrationsFor(settingsButton.moduleId).settingsButtons.push(settingsButton);
-        }
-
-        const subtabData: Record<string, Partial<ApplicationTab>> = {
-            hud: {
-                id: "hud",
-                label: "UiExtender.RegistrationConfig.Hud",
-                icon: "fa-solid fa-grid-2",
-            },
-            sceneControls: {
-                id: "sceneControls",
-                label: "UiExtender.RegistrationConfig.SceneControls",
-                icon: "fa-solid fa-dial-med",
-            },
-            directories: {
-                id: "directories",
-                label: "UiExtender.RegistrationConfig.Directories",
-                icon: "fa-solid fa-folder-open",
-            },
-            settingsButtons: {
-                id: "settingsButtons",
-                label: "UiExtender.RegistrationConfig.SettingsButtons",
-                icon: "fa-solid fa-sliders",
-            },
-        };
-
-        // Create tabs for each module that has registrations
         const tabs: Record<string, ModuleTab> = {};
-        for (const [moduleId, registrations] of moduleRegistrations) {
-            const active = this.tabGroups.main === moduleId;
-            tabs[moduleId] = {
-                id: moduleId,
-                group: "main",
-                label: game.modules.get(moduleId)?.title ?? "",
+        for (const moduleId of moduleIds) {
+            tabs[moduleId] = this.#prepareModuleTab(moduleId, registrations);
+        }
+        return tabs;
+    }
+
+    #prepareModuleTab(moduleId: string, registrations: Record<string, Registration[]>): ModuleTab {
+        const subtabs: ModuleTab["subtabs"] = {};
+        for (const subtab of SUBTABS) {
+            const active = this.tabGroups[moduleId] === subtab.id;
+            subtabs[subtab.id] = {
+                ...subtab,
+                group: moduleId,
                 active,
                 cssClass: active ? "active" : "",
                 data: {
-                    registrations,
+                    items: registrations[subtab.id].filter((registration) => registration.moduleId === moduleId),
                 },
-                subtabs: (
-                    [
-                        ["hud", registrations.hudButtons],
-                        ["sceneControls", registrations.sceneControls],
-                        ["directories", registrations.directories],
-                        ["settingsButtons", registrations.settingsButtons],
-                    ] as [string, any[]][]
-                ).reduce((subtabs: any, [subtabId, items]) => {
-                    const group = moduleId;
-                    const active = this.tabGroups[group] === subtabId;
-                    const cssClass = active ? "active" : "";
-                    subtabs[subtabId] = {
-                        ...subtabData[subtabId],
-                        group,
-                        active,
-                        cssClass,
-                        data: { items },
-                    };
-                    return subtabs;
-                }, {}),
             };
         }
 
-        return tabs;
+        const active = this.tabGroups.main === moduleId;
+        return {
+            id: moduleId,
+            group: "main",
+            label: game.modules.get(moduleId)?.title ?? "",
+            active,
+            cssClass: active ? "active" : "",
+            subtabs,
+        };
     }
 
     protected override async _prepareContext(options: ApplicationRenderOptions): Promise<object> {
