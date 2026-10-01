@@ -7,7 +7,7 @@
                 <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
                     {{#if subtab.data.items}}
                         {{#each subtab.data.items as |hudButton|}}
-                            {{> (lookup @root "hudButtonPartial") hudButton=hudButton}}
+                            {{> "modules/lib-dfreds-ui-extender/templates/partials/hud-button.hbs" hudButton=hudButton}}
                         {{/each}}
                     {{else}}
                         <p class="no-items">
@@ -21,7 +21,7 @@
                 <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
                     {{#if subtab.data.items}}
                         {{#each subtab.data.items as |sceneControl|}}
-                            {{> (lookup @root "sceneControlPartial") sceneControl=sceneControl}}
+                            {{> "modules/lib-dfreds-ui-extender/templates/partials/scene-control.hbs" sceneControl=sceneControl}}
                         {{/each}}
                     {{else}}
                         <p class="no-items">
@@ -35,7 +35,7 @@
                 <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
                     {{#if subtab.data.items}}
                         {{#each subtab.data.items as |directory|}}
-                            {{> (lookup @root "directoryPartial") directory=directory}}
+                            {{> "modules/lib-dfreds-ui-extender/templates/partials/directory.hbs" directory=directory}}
                         {{/each}}
                     {{else}}
                         <p class="no-items">
@@ -49,7 +49,7 @@
                 <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
                     {{#if subtab.data.items}}
                         {{#each subtab.data.items as |settingsButton|}}
-                            {{> (lookup @root "settingsButtonPartial") settingsButton=settingsButton}}
+                            {{> "modules/lib-dfreds-ui-extender/templates/partials/settings-button.hbs" settingsButton=settingsButton}}
                         {{/each}}
                     {{else}}
                         <p class="no-items">

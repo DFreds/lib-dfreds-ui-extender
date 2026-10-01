@@ -59,14 +59,6 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
         },
     };
 
-    static _hudButtonPartial = `modules/${MODULE_ID}/templates/partials/hud-button.hbs`;
-
-    static _sceneControlPartial = `modules/${MODULE_ID}/templates/partials/scene-control.hbs`;
-
-    static _directoryPartial = `modules/${MODULE_ID}/templates/partials/directory.hbs`;
-
-    static _settingsButtonPartial = `modules/${MODULE_ID}/templates/partials/settings-button.hbs`;
-
     static override PARTS: Record<string, HandlebarsTemplatePart> = {
         tabs: {
             template: "templates/generic/tab-navigation.hbs",
@@ -75,10 +67,10 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
             classes: ["scrollable"],
             template: `modules/${MODULE_ID}/templates/registration-config.hbs`,
             templates: [
-                RegistrationConfig._hudButtonPartial,
-                RegistrationConfig._sceneControlPartial,
-                RegistrationConfig._directoryPartial,
-                RegistrationConfig._settingsButtonPartial,
+                `modules/${MODULE_ID}/templates/partials/hud-button.hbs`,
+                `modules/${MODULE_ID}/templates/partials/scene-control.hbs`,
+                `modules/${MODULE_ID}/templates/partials/directory.hbs`,
+                `modules/${MODULE_ID}/templates/partials/settings-button.hbs`,
             ],
             scrollable: [".tab-content"],
         },
@@ -136,10 +128,6 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
         return Object.assign(context, {
             tabs: this.#prepareTabs(),
             rootId: this.id,
-            hudButtonPartial: RegistrationConfig._hudButtonPartial,
-            sceneControlPartial: RegistrationConfig._sceneControlPartial,
-            directoryPartial: RegistrationConfig._directoryPartial,
-            settingsButtonPartial: RegistrationConfig._settingsButtonPartial,
         });
     }
 }
