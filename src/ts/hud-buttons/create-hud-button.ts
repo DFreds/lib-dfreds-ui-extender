@@ -60,9 +60,7 @@ function generateButton({
     button.attr("data-tooltip", tooltip);
 
     if (attributes) {
-        Object.entries(attributes).forEach(([key, value]) => {
-            button.attr(key, value);
-        });
+        button.attr(attributes);
     }
 
     return button;
