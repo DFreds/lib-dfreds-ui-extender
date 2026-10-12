@@ -1,5 +1,6 @@
 import { HandlebarsTemplatePart } from "@client/applications/api/_module.mjs";
 import { MODULE_ID } from "./constants.ts";
+import { log } from "./logger.ts";
 import { ApplicationConfiguration } from "@client/applications/_module.mjs";
 import { BasePlaceableHUD } from "@client/applications/hud/_module.mjs";
 
@@ -79,8 +80,8 @@ export function mySampleModule(): void {
                                   }
                                 : undefined,
                         order: index,
-                        onChange: (event, active) => {
-                            console.log("onChange", event, active);
+                        onChange: (_event, active) => {
+                            log(`onChange: active ${active}`);
                             ui.notifications.info(`You clicked me! Active: ${active}`);
                         },
                     },
@@ -101,10 +102,10 @@ export function mySampleModule(): void {
                 return true;
             },
             onClick: (_event: JQuery.ClickEvent, _button: JQuery, _token: any, _hud: BasePlaceableHUD) => {
-                console.log("clicked");
+                log("clicked");
             },
             onRightClick: (_event: JQuery.ContextMenuEvent, _button: JQuery, _token: any, _hud: BasePlaceableHUD) => {
-                console.log("right clicked");
+                log("right clicked");
             },
         });
 
@@ -115,10 +116,10 @@ export function mySampleModule(): void {
             icon: `<i class="fas fa-image fa-fw"></i>`,
             location: "div.left",
             onClick: (_event: JQuery.ClickEvent, _button: JQuery, tile: any, _hud: BasePlaceableHUD) => {
-                console.log("clicked", tile);
+                log(`clicked tile ${tile.id}`);
             },
             onRightClick: (_event: JQuery.ContextMenuEvent, _button: JQuery, tile: any, _hud: BasePlaceableHUD) => {
-                console.log("right clicked", tile);
+                log(`right clicked tile ${tile.id}`);
             },
         });
 
