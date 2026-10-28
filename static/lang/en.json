@@ -27,6 +27,8 @@
                 "ToolIconLabel": "Tool Icon",
                 "ToolPropertiesLabel": "Tool Properties",
                 "ToolclipLabel": "Toolclip Heading",
+                "ToolVisible": "visible",
+                "ToolHidden": "hidden",
                 "NoSceneControls": "No scene controls registered for {moduleId}"
             },
             "Directory": {
