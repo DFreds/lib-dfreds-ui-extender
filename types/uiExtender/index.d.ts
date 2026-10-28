@@ -7,7 +7,9 @@ declare global {
     }
 
     /**
-     * The UiExtender class
+     * The UiExtender class. Call the register methods inside the
+     * `uiExtender.init` hook. Registrations made after Foundry's `setup` hook
+     * are ignored.
      */
     export interface UiExtender {
         /**
