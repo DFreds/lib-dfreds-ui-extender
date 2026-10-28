@@ -13,7 +13,7 @@ class HandlebarHelpers {
     #registerCompare() {
         Handlebars.registerHelper(
             "compare",
-            (leftValue: unknown, operator: string, rightValue: unknown, options: any) => {
+            function (this: unknown, leftValue: unknown, operator: string, rightValue: unknown, options: any) {
                 if (options === undefined) {
                     options = rightValue;
                     rightValue = operator;
