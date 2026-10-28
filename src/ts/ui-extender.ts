@@ -49,11 +49,7 @@ class UiExtenderImpl implements UiExtender {
     }
 
     registerSceneControl(input: SceneControlInput): void {
-        if (this.#verifyModuleId(input.moduleId)) {
-            this.#sceneControls.push(input);
-        } else {
-            throw new Error(`Invalid moduleId ${input.moduleId}`);
-        }
+        this.#register(this.#sceneControls, input);
     }
 
     #createSceneControls(): void {
@@ -61,11 +57,7 @@ class UiExtenderImpl implements UiExtender {
     }
 
     registerHudButton(input: HudButtonInput): void {
-        if (this.#verifyModuleId(input.moduleId)) {
-            this.#hudButtons.push(input);
-        } else {
-            throw new Error(`Invalid moduleId ${input.moduleId}`);
-        }
+        this.#register(this.#hudButtons, input);
     }
 
     #createHudButtons(): void {
@@ -73,11 +65,7 @@ class UiExtenderImpl implements UiExtender {
     }
 
     registerDirectory(input: DirectoryInput): void {
-        if (this.#verifyModuleId(input.moduleId)) {
-            this.#directories.push(input);
-        } else {
-            throw new Error(`Invalid moduleId ${input.moduleId}`);
-        }
+        this.#register(this.#directories, input);
     }
 
     #createDirectories(): void {
@@ -85,20 +73,19 @@ class UiExtenderImpl implements UiExtender {
     }
 
     registerSettingsButton(input: SettingsButtonInput): void {
-        if (this.#verifyModuleId(input.moduleId)) {
-            this.#settingsButtons.push(input);
-        } else {
-            throw new Error(`Invalid moduleId ${input.moduleId}`);
-        }
+        this.#register(this.#settingsButtons, input);
     }
 
     #createSettingsButtons(): void {
         createSettingsButtons(this.#settingsButtons);
     }
 
-    #verifyModuleId(id: string): boolean {
-        const mod = game.modules.get(id);
-        return !!mod;
+    #register<T extends { moduleId: string }>(list: T[], input: T): void {
+        if (!game.modules.get(input.moduleId)?.active) {
+            throw new Error(`Invalid moduleId ${input.moduleId}`);
+        }
+
+        list.push(input);
     }
 }
 
