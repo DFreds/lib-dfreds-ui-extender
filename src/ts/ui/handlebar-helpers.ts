@@ -6,6 +6,7 @@ class HandlebarHelpers {
 
         this.#registerDirectoryName();
         this.#registerDirectoryIcon();
+        this.#registerHudButtonHandlers();
     }
 
     /* http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates */
@@ -102,6 +103,13 @@ class HandlebarHelpers {
             } else {
                 return directory.icon;
             }
+        });
+    }
+
+    #registerHudButtonHandlers() {
+        Handlebars.registerHelper("libUiExtenderHudButtonHandlers", (hudButton: HudButtonInput) => {
+            const handlers = ["onClick", "onRightClick", "onRenderComplete"] as const;
+            return handlers.filter((handler) => hudButton[handler] !== undefined).join(", ");
         });
     }
 }
