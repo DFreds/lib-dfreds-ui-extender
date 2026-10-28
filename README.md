@@ -37,9 +37,9 @@
 
 ## Features
 
-- Easily add new sidebar directories
 - Easily add new HUD controls to tokens, tiles, or drawings
 - Easily add new scene controls to any layer controls (token, tiles, drawings, walls, etc.)
+- Easily add new sidebar directories
 - Easily add a button to the Settings sidebar that opens your module's settings
 - Fully typed library included in repository for Typescript projects
 
