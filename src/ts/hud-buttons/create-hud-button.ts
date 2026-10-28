@@ -1,3 +1,5 @@
+import type { BasePlaceableHUD } from "@client/applications/hud/_module.mjs";
+
 function createHudButton(input: HudButtonInput): void {
     const type = input.hudType.capitalize();
 
@@ -5,8 +7,7 @@ function createHudButton(input: HudButtonInput): void {
         `render${type}HUD`,
         // @ts-expect-error Ignore this, it can't do dynamic hook names
         (hud: BasePlaceableHUD, html: HTMLElement, data: object) => {
-            const { tooltip, action, icon, attributes, location, predicate, onClick, onRightClick, onRenderComplete } =
-                input;
+            const { tooltip, action, icon, attributes, location, predicate } = input;
 
             if (predicate && predicate(data) === false) return;
 
@@ -17,26 +18,57 @@ function createHudButton(input: HudButtonInput): void {
                 attributes,
             });
 
-            if (onClick) {
-                button.on("click", (event: JQuery.ClickEvent) => {
-                    onClick(event, button, data, hud);
-                });
-            }
+            html.querySelector(location)?.append(button);
 
-            if (onRightClick) {
-                button.on("contextmenu", (event: JQuery.ContextMenuEvent) => {
-                    onRightClick(event, button, data, hud);
-                });
-            }
-
-            const $html = $(html);
-            $html.find(location).append(button);
-
-            if (onRenderComplete) {
-                onRenderComplete(hud, $html, data);
+            if (input.nativeDom) {
+                addNativeHandlers(input, button, hud, html, data);
+            } else {
+                addJQueryHandlers(input, button, hud, html, data);
             }
         },
     );
+}
+
+function addNativeHandlers(
+    { onClick, onRightClick, onRenderComplete }: HudButtonNativeInput,
+    button: HTMLButtonElement,
+    hud: BasePlaceableHUD,
+    html: HTMLElement,
+    data: object,
+): void {
+    if (onClick) {
+        button.addEventListener("click", (event) => onClick(event, button, data, hud));
+    }
+
+    if (onRightClick) {
+        button.addEventListener("contextmenu", (event) => onRightClick(event, button, data, hud));
+    }
+
+    if (onRenderComplete) {
+        onRenderComplete(hud, html, data);
+    }
+}
+
+function addJQueryHandlers(
+    { onClick, onRightClick, onRenderComplete }: HudButtonJQueryInput,
+    button: HTMLButtonElement,
+    hud: BasePlaceableHUD,
+    html: HTMLElement,
+    data: object,
+): void {
+    const $button = $(button);
+
+    if (onClick) {
+        $button.on("click", (event: JQuery.ClickEvent) => onClick(event, $button, data, hud));
+    }
+
+    if (onRightClick) {
+        $button.on("contextmenu", (event: JQuery.ContextMenuEvent) => onRightClick(event, $button, data, hud));
+    }
+
+    if (onRenderComplete) {
+        onRenderComplete(hud, $(html), data);
+    }
 }
 
 function generateButton({
@@ -49,18 +81,18 @@ function generateButton({
     action?: string;
     tooltip: string;
     attributes?: Record<string, string>;
-}): JQuery<HTMLButtonElement> {
-    const button = $(document.createElement("button"));
+}): HTMLButtonElement {
+    const button = document.createElement("button");
 
-    button.attr("type", "button");
-    button.addClass("control-icon");
-    button.html(icon);
+    button.type = "button";
+    button.classList.add("control-icon");
+    button.innerHTML = icon;
 
-    button.attr("data-action", action ?? tooltip.toLowerCase().slugify());
-    button.attr("data-tooltip", tooltip);
+    button.dataset.action = action ?? tooltip.toLowerCase().slugify();
+    button.dataset.tooltip = tooltip;
 
-    if (attributes) {
-        button.attr(attributes);
+    for (const [name, value] of Object.entries(attributes ?? {})) {
+        button.setAttribute(name, value);
     }
 
     return button;

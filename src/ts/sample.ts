@@ -92,6 +92,7 @@ export function mySampleModule(): void {
         uiExtender.registerHudButton({
             moduleId: MODULE_ID,
             hudType: "token",
+            nativeDom: true,
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image"></i>`,
             location: "div.left",
@@ -101,10 +102,10 @@ export function mySampleModule(): void {
             predicate: (_token: any) => {
                 return true;
             },
-            onClick: (_event: JQuery.ClickEvent, _button: JQuery, _token: any, _hud: BasePlaceableHUD) => {
+            onClick: (_event: MouseEvent, _button: HTMLButtonElement, _token: any, _hud: BasePlaceableHUD) => {
                 log("clicked");
             },
-            onRightClick: (_event: JQuery.ContextMenuEvent, _button: JQuery, _token: any, _hud: BasePlaceableHUD) => {
+            onRightClick: (_event: MouseEvent, _button: HTMLButtonElement, _token: any, _hud: BasePlaceableHUD) => {
                 log("right clicked");
             },
         });
@@ -112,13 +113,14 @@ export function mySampleModule(): void {
         uiExtender.registerHudButton({
             moduleId: MODULE_ID,
             hudType: "tile",
+            nativeDom: true,
             tooltip: "Show Art Button",
             icon: `<i class="fas fa-image fa-fw"></i>`,
             location: "div.left",
-            onClick: (_event: JQuery.ClickEvent, _button: JQuery, tile: any, _hud: BasePlaceableHUD) => {
+            onClick: (_event: MouseEvent, _button: HTMLButtonElement, tile: any, _hud: BasePlaceableHUD) => {
                 log(`clicked tile ${tile.id}`);
             },
-            onRightClick: (_event: JQuery.ContextMenuEvent, _button: JQuery, tile: any, _hud: BasePlaceableHUD) => {
+            onRightClick: (_event: MouseEvent, _button: HTMLButtonElement, tile: any, _hud: BasePlaceableHUD) => {
                 log(`right clicked tile ${tile.id}`);
             },
         });
@@ -126,10 +128,11 @@ export function mySampleModule(): void {
         uiExtender.registerHudButton({
             moduleId: MODULE_ID,
             hudType: "drawing",
+            nativeDom: true,
             tooltip: "Say Hi",
             icon: `<i class="fas fa-robot fa-fw"></i>`,
             location: "div.right",
-            onClick: (_event: JQuery.ClickEvent, _button: JQuery, drawing: any, _hud: BasePlaceableHUD) => {
+            onClick: (_event: MouseEvent, _button: HTMLButtonElement, drawing: any, _hud: BasePlaceableHUD) => {
                 ui.notifications.info(`Hello from drawing ${drawing.fillColor}`);
             },
         });

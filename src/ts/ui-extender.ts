@@ -1,3 +1,4 @@
+import { MODULE_ID } from "./constants.ts";
 import { createDirectory } from "./directories/create-directories.ts";
 import { createHudButton } from "./hud-buttons/create-hud-button.ts";
 import { createSceneControl } from "./scene-controls/create-scene-control.ts";
@@ -58,6 +59,13 @@ class UiExtenderImpl implements UiExtender {
 
     registerHudButton(input: HudButtonInput): void {
         this.#register(this.#hudButtons, input);
+
+        if (!input.nativeDom) {
+            foundry.utils.logCompatibilityWarning(
+                `${MODULE_ID} | ${input.moduleId} registered a HUD button with jQuery callbacks. Set "nativeDom: true" to get native DOM elements instead. jQuery callbacks are deprecated since UI Extender 2.6.0 and will be removed in 3.0.0.`,
+                { once: true },
+            );
+        }
     }
 
     #createHudButtons(): void {
