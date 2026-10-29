@@ -35,7 +35,7 @@ function initialSubtabs(): Record<string, string> {
     const initial: Record<string, string> = {};
     for (const subtab of SUBTABS) {
         for (const registration of registrations[subtab.id]) {
-            initial[registration.moduleId] = subtab.id;
+            initial[registration.moduleId] ??= subtab.id;
         }
     }
     return initial;
