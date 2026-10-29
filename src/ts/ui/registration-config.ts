@@ -30,6 +30,14 @@ function registrationsBySubtab(): Record<string, Registration[]> {
     };
 }
 
+function registeredModuleIds(): Set<string> {
+    return new Set(
+        Object.values(registrationsBySubtab())
+            .flat()
+            .map((registration) => registration.moduleId),
+    );
+}
+
 function initialSubtabs(): Record<string, string> {
     const registrations = registrationsBySubtab();
     const initial: Record<string, string> = {};
@@ -75,20 +83,15 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
     };
 
     override tabGroups: Record<string, string> = {
-        main: "base",
+        main: [...registeredModuleIds()][0] ?? "",
         ...initialSubtabs(),
     };
 
     #prepareTabs(): Record<string, ModuleTab> {
         const registrations = registrationsBySubtab();
-        const moduleIds = new Set(
-            Object.values(registrations)
-                .flat()
-                .map((registration) => registration.moduleId),
-        );
 
         const tabs: Record<string, ModuleTab> = {};
-        for (const moduleId of moduleIds) {
+        for (const moduleId of registeredModuleIds()) {
             tabs[moduleId] = this.#prepareModuleTab(moduleId, registrations);
         }
         return tabs;
