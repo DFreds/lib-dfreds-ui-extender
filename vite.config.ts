@@ -15,7 +15,7 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
     console.log(`Build mode: ${buildMode}`);
 
     if (buildMode === "production" || buildMode === "stage") {
-        plugins.push(...viteStaticCopy({ targets: [{ src: "README.md", dest: "." }] }));
+        plugins.push(...viteStaticCopy({ targets: [{ src: "README.md", dest: "." }] }), deleteSampleTemplatePlugin());
         if (buildMode === "production") plugins.push(deleteLockFilePlugin());
     } else {
         plugins.push(handleHotUpdateForEnLang(outDir), handleHotUpdateForHandlebars(outDir));
@@ -113,6 +113,16 @@ function deleteLockFilePlugin(): Vite.Plugin {
             const outDir = outputOptions.dir ?? "";
             const lockFile = path.resolve(outDir, `${MODULE_ID}.lock`);
             fs.rmSync(lockFile, { force: true });
+        },
+    };
+}
+
+function deleteSampleTemplatePlugin(): Vite.Plugin {
+    return {
+        name: "delete-sample-template-plugin",
+        writeBundle(outputOptions) {
+            const outDir = outputOptions.dir ?? "";
+            fs.rmSync(path.resolve(outDir, "templates/sample.hbs"), { force: true });
         },
     };
 }
