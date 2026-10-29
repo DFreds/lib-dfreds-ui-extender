@@ -41,7 +41,6 @@ function initialSubtabs(): Record<string, string> {
     return initial;
 }
 
-/** Similar to prototype-overrides - could be similar to SettingsConfig */
 class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
     static override DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
         id: "registration-config",
