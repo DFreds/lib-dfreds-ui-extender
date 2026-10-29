@@ -44,7 +44,6 @@ function initialSubtabs(): Record<string, string> {
 class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
     static override DEFAULT_OPTIONS: DeepPartial<ApplicationConfiguration> = {
         id: "registration-config",
-        tag: "form",
         window: {
             title: "UiExtender.RegistrationConfig.Title",
             contentClasses: ["standard-form"],
