@@ -28,7 +28,7 @@ function insertTabNextTo(
 function createDirectory(input: DirectoryInput): void {
     const { id, before, after, order, applicationClass } = input;
     const tabConfig = createTabConfig(input);
-    const tabs = CONFIG.ui.sidebar.TABS as unknown as Record<string, any>;
+    const tabs = CONFIG.ui.sidebar.TABS;
 
     if (before !== undefined && before in tabs) {
         CONFIG.ui.sidebar.TABS = insertTabNextTo(tabs, id, tabConfig, before, "before");
