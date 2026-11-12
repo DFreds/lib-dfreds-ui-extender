@@ -14,12 +14,12 @@ function createSceneControl(input: SceneControlInput): void {
 
         const targetControlTools = targetControl.tools as unknown as Record<string, SceneControlToolInput>;
 
-        if (tool.order === undefined) {
-            tool.order = Object.keys(targetControl.tools).length + 1; // Foundry starts at 1
-        } else {
+        const builtTool = { ...tool, order: tool.order ?? Object.keys(targetControl.tools).length + 1 }; // Foundry starts at 1
+
+        if (tool.order !== undefined) {
             // Shift existing tools' orders to make space for the new tool
             Object.values(targetControlTools).forEach((existingTool) => {
-                const toolOrder = tool.order as number;
+                const toolOrder = builtTool.order;
                 const existingOrder = existingTool.order as number;
 
                 if (existingOrder >= toolOrder) {
@@ -28,7 +28,7 @@ function createSceneControl(input: SceneControlInput): void {
             });
         }
 
-        targetControlTools[tool.name] = tool;
+        targetControlTools[builtTool.name] = builtTool;
     });
 }
 
