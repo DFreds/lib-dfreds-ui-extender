@@ -39,7 +39,6 @@ class SampleApplication extends HandlebarsApplicationMixin(AbstractSidebarTab) {
 
 // Module usage
 export function mySampleModule(): void {
-    // @ts-expect-error Type mismatch
     Hooks.once("uiExtender.init", (uiExtender: UiExtender) => {
         uiExtender.registerDirectory({
             moduleId: MODULE_ID,

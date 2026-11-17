@@ -3,30 +3,26 @@ import type { BasePlaceableHUD } from "@client/applications/hud/_module.mjs";
 function createHudButton(input: HudButtonInput): void {
     const type = input.hudType.capitalize();
 
-    Hooks.on(
-        `render${type}HUD`,
-        // @ts-expect-error Ignore this, it can't do dynamic hook names
-        (hud: BasePlaceableHUD, html: HTMLElement, data: object) => {
-            const { tooltip, action, icon, attributes, location, predicate } = input;
+    Hooks.on(`render${type}HUD`, (hud: BasePlaceableHUD, html: HTMLElement, data: object) => {
+        const { tooltip, action, icon, attributes, location, predicate } = input;
 
-            if (predicate && predicate(data) === false) return;
+        if (predicate && predicate(data) === false) return;
 
-            const button = generateButton({
-                icon,
-                action,
-                tooltip,
-                attributes,
-            });
+        const button = generateButton({
+            icon,
+            action,
+            tooltip,
+            attributes,
+        });
 
-            html.querySelector(location)?.append(button);
+        html.querySelector(location)?.append(button);
 
-            if (input.nativeDom) {
-                addNativeHandlers(input, button, hud, html, data);
-            } else {
-                addJQueryHandlers(input, button, hud, html, data);
-            }
-        },
-    );
+        if (input.nativeDom) {
+            addNativeHandlers(input, button, hud, html, data);
+        } else {
+            addJQueryHandlers(input, button, hud, html, data);
+        }
+    });
 }
 
 function addNativeHandlers(
