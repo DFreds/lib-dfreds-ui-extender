@@ -1,6 +1,6 @@
 import { SceneControl } from "@client/applications/ui/scene-controls.mjs";
 
-function createSceneControl(input: SceneControlInput): void {
+function createSceneControl(input: SceneControlToolInput): void {
     Hooks.on("getSceneControlButtons", (controls: Record<string, SceneControl>) => {
         const { name, predicate, tool } = input;
 
@@ -12,7 +12,7 @@ function createSceneControl(input: SceneControlInput): void {
             throw new Error(`Cannot find target control ${name}`);
         }
 
-        const targetControlTools = targetControl.tools as unknown as Record<string, SceneControlToolInput>;
+        const targetControlTools = targetControl.tools as unknown as Record<string, SceneControlToolData>;
 
         const builtTool = { ...tool, order: tool.order ?? Object.keys(targetControl.tools).length + 1 }; // Foundry starts at 1
 

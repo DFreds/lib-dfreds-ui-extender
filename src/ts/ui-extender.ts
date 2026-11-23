@@ -5,7 +5,7 @@ import { createSceneControl } from "./scene-controls/create-scene-control.ts";
 import { createSettingsButtons } from "./settings-buttons/create-settings-buttons.ts";
 
 class UiExtenderImpl implements UiExtender {
-    #sceneControls: SceneControlInput[];
+    #sceneControls: SceneControlToolInput[];
     #hudButtons: HudButtonInput[];
     #directories: DirectoryInput[];
     #settingsButtons: SettingsButtonInput[];
@@ -33,7 +33,7 @@ class UiExtenderImpl implements UiExtender {
         Hooks.callAll("uiExtender.setup", uiExtender);
     }
 
-    get _sceneControls(): SceneControlInput[] {
+    get _sceneControls(): SceneControlToolInput[] {
         return this.#sceneControls;
     }
 
@@ -49,7 +49,16 @@ class UiExtenderImpl implements UiExtender {
         return this.#settingsButtons;
     }
 
-    registerSceneControl(input: SceneControlInput): void {
+    registerSceneControl(input: SceneControlToolInput): void {
+        foundry.utils.logCompatibilityWarning(
+            `${MODULE_ID} | ${input.moduleId} called registerSceneControl. Use registerSceneControlTool instead. registerSceneControl is deprecated since UI Extender 2.7.0 and will be removed in 3.0.0.`,
+            { once: true },
+        );
+
+        this.registerSceneControlTool(input);
+    }
+
+    registerSceneControlTool(input: SceneControlToolInput): void {
         this.#register(this.#sceneControls, input);
     }
 

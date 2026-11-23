@@ -14,9 +14,16 @@ declare global {
     export interface UiExtender {
         /**
          * Register a scene control
-         * @param input The scene control input
+         * @param input The scene control tool input
+         * @deprecated Since 2.7.0. Use {@link UiExtender.registerSceneControlTool}. Removed in 3.0.0.
          */
-        registerSceneControl(input: SceneControlInput): void;
+        registerSceneControl(input: SceneControlToolInput): void;
+
+        /**
+         * Register a tool on a scene control
+         * @param input The scene control tool input
+         */
+        registerSceneControlTool(input: SceneControlToolInput): void;
 
         /**
          * Register a HUD button
@@ -37,7 +44,7 @@ declare global {
         registerSettingsButton(input: SettingsButtonInput): void;
     }
 
-    export interface SceneControlInput {
+    export interface SceneControlToolInput {
         /**
          * The ID of the module registering
          */
@@ -59,10 +66,10 @@ declare global {
         /**
          * The tool data
          */
-        tool: SceneControlToolInput;
+        tool: SceneControlToolData;
     }
 
-    export interface SceneControlToolInput {
+    export interface SceneControlToolData {
         /* An identifier for the tool, unique among the tools of its SceneControl. This should be camelCase for maximum compatibility. */
         name: string;
         /** An integer indicating the tool's order, with 0 being at the top. If not provided, the tool will be added to the end of the list. */
