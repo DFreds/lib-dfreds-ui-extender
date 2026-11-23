@@ -1,17 +1,19 @@
 import { MODULE_ID } from "./constants.ts";
 import { createDirectory } from "./directories/create-directories.ts";
 import { createHudButton } from "./hud-buttons/create-hud-button.ts";
-import { createSceneControl } from "./scene-controls/create-scene-control.ts";
+import { createSceneControl, createSceneControlTool } from "./scene-controls/create-scene-control.ts";
 import { createSettingsButtons } from "./settings-buttons/create-settings-buttons.ts";
 
 class UiExtenderImpl implements UiExtender {
-    #sceneControls: SceneControlToolInput[];
+    #sceneControls: SceneControlInput[];
+    #sceneControlTools: SceneControlToolInput[];
     #hudButtons: HudButtonInput[];
     #directories: DirectoryInput[];
     #settingsButtons: SettingsButtonInput[];
 
     constructor() {
         this.#sceneControls = [];
+        this.#sceneControlTools = [];
         this.#hudButtons = [];
         this.#directories = [];
         this.#settingsButtons = [];
@@ -26,6 +28,7 @@ class UiExtenderImpl implements UiExtender {
 
     static setup(): void {
         (uiExtender as UiExtenderImpl).#createSceneControls();
+        (uiExtender as UiExtenderImpl).#createSceneControlTools();
         (uiExtender as UiExtenderImpl).#createHudButtons();
         (uiExtender as UiExtenderImpl).#createDirectories();
         (uiExtender as UiExtenderImpl).#createSettingsButtons();
@@ -33,8 +36,12 @@ class UiExtenderImpl implements UiExtender {
         Hooks.callAll("uiExtender.setup", uiExtender);
     }
 
-    get _sceneControls(): SceneControlToolInput[] {
+    get _sceneControls(): SceneControlInput[] {
         return this.#sceneControls;
+    }
+
+    get _sceneControlTools(): SceneControlToolInput[] {
+        return this.#sceneControlTools;
     }
 
     get _hudButtons(): HudButtonInput[] {
@@ -49,21 +56,30 @@ class UiExtenderImpl implements UiExtender {
         return this.#settingsButtons;
     }
 
-    registerSceneControl(input: SceneControlToolInput): void {
-        foundry.utils.logCompatibilityWarning(
-            `${MODULE_ID} | ${input.moduleId} called registerSceneControl. Use registerSceneControlTool instead. registerSceneControl is deprecated since UI Extender 2.7.0 and will be removed in 3.0.0.`,
-            { once: true },
-        );
+    registerSceneControl(input: SceneControlInput | SceneControlToolInput): void {
+        if ("tool" in input) {
+            foundry.utils.logCompatibilityWarning(
+                `${MODULE_ID} | ${input.moduleId} registered a scene control tool with registerSceneControl. Use registerSceneControlTool instead. Registering tools with registerSceneControl is deprecated since UI Extender 2.7.0 and will be removed in 3.0.0.`,
+                { once: true },
+            );
 
-        this.registerSceneControlTool(input);
-    }
+            this.registerSceneControlTool(input);
+            return;
+        }
 
-    registerSceneControlTool(input: SceneControlToolInput): void {
         this.#register(this.#sceneControls, input);
     }
 
     #createSceneControls(): void {
         this.#sceneControls.forEach((sceneControl) => createSceneControl(sceneControl));
+    }
+
+    registerSceneControlTool(input: SceneControlToolInput): void {
+        this.#register(this.#sceneControlTools, input);
+    }
+
+    #createSceneControlTools(): void {
+        this.#sceneControlTools.forEach((sceneControlTool) => createSceneControlTool(sceneControlTool));
     }
 
     registerHudButton(input: HudButtonInput): void {

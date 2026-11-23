@@ -31,6 +31,20 @@
                 </div>
             {{/with}}
 
+            {{#with tab.subtabs.sceneControlTools as |subtab|}}
+                <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
+                    {{#if subtab.data.items}}
+                        {{#each subtab.data.items as |sceneControlTool|}}
+                            {{> "modules/lib-dfreds-ui-extender/templates/partials/scene-control-tool.hbs" sceneControlTool=sceneControlTool}}
+                        {{/each}}
+                    {{else}}
+                        <p class="no-items">
+                            {{localize "UiExtender.RegistrationConfig.SceneControlTool.NoSceneControlTools" moduleId=tab.id}}
+                        </p>
+                    {{/if}}
+                </div>
+            {{/with}}
+
             {{#with tab.subtabs.directories as |subtab|}}
                 <div class="tab subtab {{subtab.cssClass}}" data-tab="{{subtab.id}}" data-group="{{subtab.group}}">
                     {{#if subtab.data.items}}

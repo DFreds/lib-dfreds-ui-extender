@@ -15,7 +15,12 @@ interface ModuleTab extends Partial<ApplicationTab> {
 
 const SUBTABS = [
     { id: "hud", label: "UiExtender.RegistrationConfig.Hud", icon: "fa-solid fa-grid-2" },
-    { id: "sceneControls", label: "UiExtender.RegistrationConfig.SceneControls", icon: "fa-solid fa-dial-med" },
+    { id: "sceneControls", label: "UiExtender.RegistrationConfig.SceneControls", icon: "fa-solid fa-layer-group" },
+    {
+        id: "sceneControlTools",
+        label: "UiExtender.RegistrationConfig.SceneControlTools",
+        icon: "fa-solid fa-dial-med",
+    },
     { id: "directories", label: "UiExtender.RegistrationConfig.Directories", icon: "fa-solid fa-folder-open" },
     { id: "settingsButtons", label: "UiExtender.RegistrationConfig.SettingsButtons", icon: "fa-solid fa-sliders" },
 ];
@@ -25,6 +30,7 @@ function registrationsBySubtab(): Record<string, Registration[]> {
     return {
         hud: extender._hudButtons,
         sceneControls: extender._sceneControls,
+        sceneControlTools: extender._sceneControlTools,
         directories: extender._directories,
         settingsButtons: extender._settingsButtons,
     };
@@ -75,6 +81,7 @@ class RegistrationConfig extends HandlebarsApplicationMixin(ApplicationV2) {
             templates: [
                 `modules/${MODULE_ID}/templates/partials/hud-button.hbs`,
                 `modules/${MODULE_ID}/templates/partials/scene-control.hbs`,
+                `modules/${MODULE_ID}/templates/partials/scene-control-tool.hbs`,
                 `modules/${MODULE_ID}/templates/partials/directory.hbs`,
                 `modules/${MODULE_ID}/templates/partials/settings-button.hbs`,
             ],

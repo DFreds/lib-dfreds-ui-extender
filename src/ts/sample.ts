@@ -88,6 +88,27 @@ export function mySampleModule(): void {
             },
         );
 
+        uiExtender.registerSceneControl({
+            moduleId: MODULE_ID,
+            after: "walls",
+            control: {
+                name: "sampleControl",
+                title: "Sample Control",
+                icon: "fas fa-robot",
+                layer: "walls",
+                tools: [
+                    { name: "sampleSelect", title: "Sample Select", icon: "fas fa-hand-pointer" },
+                    {
+                        name: "sampleButton",
+                        title: "Sample Button",
+                        icon: "fas fa-bell",
+                        button: true,
+                        onChange: () => ui.notifications.info("Sample button clicked"),
+                    },
+                ],
+            },
+        });
+
         uiExtender.registerHudButton({
             moduleId: MODULE_ID,
             hudType: "token",

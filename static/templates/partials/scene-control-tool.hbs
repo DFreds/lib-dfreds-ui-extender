@@ -1,0 +1,59 @@
+<fieldset>
+    <legend><i class="{{sceneControlTool.tool.icon}}"></i> {{localize sceneControlTool.tool.title}}</legend>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.ModuleIdLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{sceneControlTool.moduleId}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.NameLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{sceneControlTool.name}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.PredicateLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{#if (ne sceneControlTool.predicate undefined)}}{{localize "COMMON.Yes"}}{{else}}{{localize "COMMON.No"}}{{/if}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{sceneControlTool.tool.name}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolOrderLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{sceneControlTool.tool.order}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolTitleLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{localize sceneControlTool.tool.title}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolIconLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{sceneControlTool.tool.icon}}" disabled />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolPropertiesLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{#if (eq sceneControlTool.tool.visible undefined)}}{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolVisible"}}{{else if sceneControlTool.tool.visible}}{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolVisible"}}{{else}}{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolHidden"}}{{/if}}{{#if (ne sceneControlTool.tool.toggle undefined)}}, toggle{{/if}}{{#if (ne sceneControlTool.tool.active undefined)}}, active{{/if}}{{#if (ne sceneControlTool.tool.button undefined)}}, button{{/if}}{{#if (ne sceneControlTool.tool.interaction undefined)}}, interaction{{/if}}{{#if (ne sceneControlTool.tool.control undefined)}}, control{{/if}}{{#if (ne sceneControlTool.tool.creation undefined)}}, creation{{/if}}" disabled />
+        </div>
+    </div>
+    {{#if (ne sceneControlTool.tool.toolclip undefined)}}
+    <div class="form-group">
+        <label>{{localize "UiExtender.RegistrationConfig.SceneControlTool.ToolclipLabel"}}</label>
+        <div class="form-fields">
+            <input type="text" value="{{localize sceneControlTool.tool.toolclip.heading}}" disabled />
+        </div>
+    </div>
+    {{/if}}
+</fieldset>

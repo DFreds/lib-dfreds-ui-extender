@@ -4,6 +4,7 @@
             "Title": "Registration Config",
             "Hud": "HUD",
             "SceneControls": "Scene Controls",
+            "SceneControlTools": "Scene Control Tools",
             "Directories": "Directories",
             "SettingsButtons": "Settings Buttons",
             "HudButton": {
@@ -20,6 +21,20 @@
             "SceneControl": {
                 "ModuleIdLabel": "Module ID",
                 "NameLabel": "Control Name",
+                "TitleLabel": "Title",
+                "IconLabel": "Icon",
+                "LayerLabel": "Layer",
+                "OrderLabel": "Order",
+                "BeforeLabel": "Before",
+                "AfterLabel": "After",
+                "GmOnlyLabel": "GM Only",
+                "PredicateLabel": "Has Predicate",
+                "ToolsLabel": "Tools",
+                "NoSceneControls": "No scene controls registered for {moduleId}"
+            },
+            "SceneControlTool": {
+                "ModuleIdLabel": "Module ID",
+                "NameLabel": "Control Name",
                 "PredicateLabel": "Has Predicate",
                 "ToolLabel": "Tool Name",
                 "ToolOrderLabel": "Tool Order",
@@ -29,7 +44,7 @@
                 "ToolclipLabel": "Toolclip Heading",
                 "ToolVisible": "visible",
                 "ToolHidden": "hidden",
-                "NoSceneControls": "No scene controls registered for {moduleId}"
+                "NoSceneControlTools": "No scene control tools registered for {moduleId}"
             },
             "Directory": {
                 "ModuleIdLabel": "Module ID",
